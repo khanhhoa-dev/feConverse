@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.*  # Thêm dòng này để ignore .env.development, .env.production, v.v.
