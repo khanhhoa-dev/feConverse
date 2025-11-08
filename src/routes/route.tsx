@@ -8,6 +8,10 @@ import OnlyHeader from '../layouts/OnlyHeader/OnlyHeader';
 import StoreLocator from '../pages/StoreLocator/StoreLocator';
 import Help from '../pages/Help/Help';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
+import Register from '../pages/Register/Register';
+import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
+import Profile from '../pages/Profile/Profile';
+import AddProduct from '../pages/AddProduct/AddProduct';
 import type { LayoutProps } from '../ts';
 
 import config from '../config';
@@ -26,5 +30,9 @@ export const publicRoute: Route[] = [
     { path: config.router.store_locator, component: StoreLocator },
     { path: config.router.help, component: Help },
     { path: config.router.detail_product, component: DetailProduct },
+    { path: config.router.forgot_password, component: ForgotPassword, layout: OnlyHeader },
+    { path: config.router.register, component: Register, layout: OnlyHeader },
+    { path: config.router.add_product, component: AddProduct, layout: OnlyHeader },
+    { path: config.router.profile, component: Profile },
 ];
 export const privateRoute = [];

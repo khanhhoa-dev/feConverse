@@ -4,7 +4,11 @@ const router = {
     pay: '/pay',
     help: '/help',
     store_locator: '/storelocator',
-    detail_product: '/:slug',
+    register: '/account/register',
+    forgot_password: '/forgot-password',
+    detail_product: 'product/detail/:slug',
+    profile: '/profile',
+    add_product: '/add/product',
     home: '/',
 };
 

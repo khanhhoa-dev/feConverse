@@ -7,6 +7,7 @@ import styles from './Header.module.scss';
 import config from '../../../config';
 import Search from './Search/Search';
 import Login from './Login/Login';
+import { useUser } from '../../../contexts/UserContext';
 
 const CategoryConfig = config.categoryConfig;
 
@@ -14,9 +15,9 @@ interface HeaderProps {
     isToggle?: boolean;
 }
 const cx = classNames.bind(styles);
-const UserLogin = false;
 
 function Header({ isToggle }: HeaderProps): JSX.Element {
+    const { LoginIn } = useUser();
     return (
         <header
             className={cx('wrapper', {
@@ -67,12 +68,15 @@ function Header({ isToggle }: HeaderProps): JSX.Element {
                     </div>
                     <div className={cx('login-search')}>
                         <Search />
-                        {UserLogin && (
-                            <div className={cx('shopping-cart')}>
-                                <ShoppingCartOutlined className={cx('icon-shopping-cart')} />
-                            </div>
+                        {LoginIn && (
+                            <>
+                                <div className={cx('shopping-cart')}>
+                                    <ShoppingCartOutlined className={cx('icon-shopping-cart')} />
+                                    <div className={cx('total-product')}>3</div>
+                                </div>
+                            </>
                         )}
-                        <Login UserLogin={UserLogin} />
+                        <Login />
                     </div>
                 </>
             )}

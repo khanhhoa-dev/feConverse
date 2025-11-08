@@ -100,7 +100,7 @@ function Search() {
                     datas.map((data, i) => {
                         return (
                             <Link
-                                to={`/${data.slug}`}
+                                to={`product/detail/${data.slug}`}
                                 className={cx('item')}
                                 key={i}
                                 onClick={() => {

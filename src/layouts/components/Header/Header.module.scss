@@ -61,6 +61,7 @@
 
 .shopping-cart {
     flex: 0;
+    position: relative;
 }
 
 .icon-shopping-cart {
@@ -74,23 +75,14 @@
     color: var(--text-color);
 }
 
-.login {
-    flex: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.text-login {
-    margin: 0 0 0 8px;
-    font-size: 1.6rem;
-    color: var(--text-color);
-    font-weight: 700;
-    cursor: pointer;
-}
-.icon-user {
-    font-size: 1.9rem;
-    padding-left: 8px;
-    cursor: pointer;
-    margin-bottom: 1px;
+//Show total number of products in cart
+.total-product {
+    position: absolute;
+    font-size: 1rem;
+    border-radius: 50px;
+    padding: 0px 4px;
+    top: -7px;
+    right: 1px;
+    background-color: #00c0cc;
+    color: var(--white-color);
 }
