@@ -6,9 +6,18 @@
     font-style: normal;
     font-display: swap;
 }
+@import '@typehaus/metropolis/400.css';
+@import '@typehaus/metropolis/700.css';
 
 :root {
-    --font-family: 'Proxima Nova', san-serif;
+    --font-family: 'Metropolis', Arial, sans-serif;
+
+    --Height-Default-Header: 60px;
+
+    --premium-color: #000;
+    --hover-color: #e4e4e4;
+    --border-color: #dbdbdb;
+    --text-color: #333;
 }
 
 * {
@@ -17,7 +26,7 @@
     padding: 0;
 }
 
-head {
+html {
     font-size: 62.5%;
 }
 
@@ -26,4 +35,23 @@ body {
     font-size: 1.6rem;
     line-height: 1.6rem;
     text-rendering: optimizeSpeed;
+}
+
+//Scroll
+/* Định dạng thanh cuộn tổng thể */
+::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+/* Định dạng thanh trượt (thumb) */
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Định dạng đường ray (track) */
+::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
 }

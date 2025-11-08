@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 function DefaultLayout({ children }: LayoutProps) {
     return (
         <div className={cx('wrapper')}>
-            <Header />
+            <Header isToggle={false} />
             <div className={cx('container')}>{children}</div>
             <Footer />
         </div>

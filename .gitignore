@@ -27,4 +27,4 @@ dist-ssr
 .env
 .env.local
 .env.*.local
-.env.*  # Thêm dòng này để ignore .env.development, .env.production, v.v.
+.env.*  

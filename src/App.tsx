@@ -7,7 +7,12 @@ import type { LayoutProps } from './ts';
 
 function App(): JSX.Element {
     return (
-        <BrowserRouter>
+        <BrowserRouter
+            future={{
+                v7_relativeSplatPath: true,
+                v7_startTransition: true,
+            }}
+        >
             <Routes>
                 {publicRoute.map((route, i) => {
                     let Layout: ComponentType<LayoutProps> = DefaultLayout;
