@@ -8,20 +8,13 @@ import styles from './Search.module.scss';
 import useDebounce from '../../../../hooks/useDebounce';
 import * as searchService from '../../../../services/searchProduct';
 import Popper from '../../../../components/Popper/Popper';
-
-interface DataProduct {
-    name: string;
-    image: string;
-    price: string;
-    product: string;
-    slug: string;
-}
+import type { DataSelectField } from '../../../../ts';
 
 const cx = classNames.bind(styles);
 
 function Search() {
     const [inputValue, setInputValue] = useState('');
-    const [datas, setDatas] = useState<DataProduct[]>([]);
+    const [datas, setDatas] = useState<DataSelectField[]>([]);
     const [active, setActive] = useState<boolean>(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const location = useLocation();

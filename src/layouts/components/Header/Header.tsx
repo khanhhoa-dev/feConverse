@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { Badge } from 'antd';
 import type { JSX } from 'react';
 
 import styles from './Header.module.scss';
@@ -51,30 +52,26 @@ function Header({ isToggle }: HeaderProps): JSX.Element {
                             return (
                                 <Link
                                     key={key}
-                                    to={`/products/${value}`}
+                                    to={value.route}
                                     className={cx('item')}
-                                    title={value}
+                                    title={value.name}
                                 >
-                                    {value}
+                                    {value.title}
                                 </Link>
                             );
                         })}
-                        <Link to={'/torelocator'} className={cx('item')}>
-                            Store Locator
-                        </Link>
-                        <Link to={'/help'} className={cx('item')}>
-                            Help
-                        </Link>
                     </div>
                     <div className={cx('login-search')}>
                         <Search />
                         {LoginIn && (
-                            <>
-                                <div className={cx('shopping-cart')}>
-                                    <ShoppingCartOutlined className={cx('icon-shopping-cart')} />
-                                    <div className={cx('total-product')}>3</div>
-                                </div>
-                            </>
+                            <div className={cx('shopping-cart')}>
+                                <Badge count={4} size="small" offset={[-8, 1]} color="#00BCD4">
+                                    <ShoppingCartOutlined
+                                        className={cx('icon-shopping-cart')}
+                                        style={{ fontSize: '24px' }}
+                                    />
+                                </Badge>
+                            </div>
                         )}
                         <Login />
                     </div>

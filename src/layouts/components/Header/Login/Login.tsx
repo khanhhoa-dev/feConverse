@@ -64,19 +64,15 @@ function Login() {
             <div className={cx('login')} onClick={handleOnClickShow}>
                 {LoginIn ? (
                     <Dropdown
-                        overlay={
-                            <Menu
-                                onClick={handleMenuClick}
-                                style={{
-                                    marginTop: '10px',
-                                }}
-                                items={menuItems}
-                            />
-                        }
+                        menu={{
+                            items: menuItems,
+                            onClick: handleMenuClick,
+                        }}
                         trigger={['hover']}
                         overlayStyle={{
                             width: '220px',
                             minWidth: '200px',
+                            marginTop: '10px',
                         }}
                     >
                         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
