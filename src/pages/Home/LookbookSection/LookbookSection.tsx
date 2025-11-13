@@ -6,7 +6,7 @@ const cx = classNames.bind(styles);
 
 const LookbookSection = () => {
     return (
-        <section className={cx('wrapper')}>
+        <div className={cx('wrapper')}>
             <h1 className={cx('title')}>How to Style Your RST</h1>
             <Row>
                 <Col span={6}>
@@ -60,7 +60,7 @@ const LookbookSection = () => {
                     </div>
                 </Col>
             </Row>
-        </section>
+        </div>
     );
 };
 

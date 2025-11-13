@@ -14,25 +14,27 @@ const Banners = config.Banners;
 function Home() {
     return (
         <div className={cx('wrapper')}>
-            <ConfigProvider
-                theme={{
-                    components: {
-                        Carousel: {
-                            dotWidth: 10,
-                            dotHeight: 10,
-                            dotActiveWidth: 20,
+            <div className={cx('banner')}>
+                <ConfigProvider
+                    theme={{
+                        components: {
+                            Carousel: {
+                                dotWidth: 10,
+                                dotHeight: 10,
+                                dotActiveWidth: 20,
+                            },
                         },
-                    },
-                }}
-            >
-                <Carousel autoplay autoplaySpeed={3000}>
-                    {Object.entries(Banners).map(([key, value]) => (
-                        <Link to={`/products/${value.link}`} key={key} className={cx('banner')}>
-                            <img src={value.image} alt={key} className={cx('banner-img')} />
-                        </Link>
-                    ))}
-                </Carousel>
-            </ConfigProvider>
+                    }}
+                >
+                    <Carousel autoplay autoplaySpeed={3000}>
+                        {Object.entries(Banners).map(([key, value]) => (
+                            <Link to={`/products/${value.link}`} key={key} className={cx('banner')}>
+                                <img src={value.image} alt={key} className={cx('banner-img')} />
+                            </Link>
+                        ))}
+                    </Carousel>
+                </ConfigProvider>
+            </div>
             <PreviewProduct />
             <FeaturedProduct />
             <LookbookSection />

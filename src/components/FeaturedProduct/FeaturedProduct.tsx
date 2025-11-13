@@ -44,23 +44,21 @@ function FeaturedProduct({ product, title }: FeaturedProductProps) {
                 ]}
             >
                 {dataProducts.map((data, i) => (
-                    <Link
-                        key={i}
-                        to={`/product/detail/${data.slug}`}
-                        className={cx('propose-product')}
-                    >
-                        <div className={cx('gap')}>
-                            <div className={cx('wrap-img')}>
-                                <img
-                                    src={data.image}
-                                    alt={data.name}
-                                    className={cx('img-propose')}
-                                />
+                    <div className={cx('propose-product')}>
+                        <Link key={i} to={`/product/detail/${data.slug}`}>
+                            <div className={cx('gap')}>
+                                <div className={cx('wrap-img')}>
+                                    <img
+                                        src={data.image}
+                                        alt={data.name}
+                                        className={cx('img-propose')}
+                                    />
+                                </div>
+                                <h3 className={cx('name-product')}>{data.name}</h3>
+                                <h4 className={cx('price')}>đ{data.price}</h4>
                             </div>
-                            <h3 className={cx('name-product')}>{data.name}</h3>
-                            <h4 className={cx('price')}>đ{data.price}</h4>
-                        </div>
-                    </Link>
+                        </Link>
+                    </div>
                 ))}
             </Carousel>
         </div>
