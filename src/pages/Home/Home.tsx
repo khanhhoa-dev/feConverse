@@ -36,7 +36,7 @@ function Home() {
                 </ConfigProvider>
             </div>
             <PreviewProduct />
-            <FeaturedProduct />
+            <FeaturedProduct title="Featured Products" />
             <LookbookSection />
             <Marketing />
         </div>

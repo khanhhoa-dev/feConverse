@@ -28,7 +28,7 @@ function FeaturedProduct({ product, title }: FeaturedProductProps) {
     }, []);
     return (
         <div className={cx('wrapper')}>
-            <h1 className={cx('title')}>Featured Product</h1>
+            <h1 className={cx('title')}>{title}</h1>
             <Carousel
                 autoplay
                 autoplaySpeed={2000}
