@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Modal, Form, Input, Button, Space, Menu, Dropdown, type MenuProps } from 'antd';
+import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps } from 'antd';
 import styles from './Login.module.scss';
 
 import { type MenuItem, CustomerMenuKey, CUSTOMER_MENU } from '../../../../config/customerMenu';

@@ -7,6 +7,7 @@ import type { IProductDetail } from '../../ts';
 const cx = classNames.bind(styles);
 
 function ProductImage({ data }: { data: IProductDetail | null }) {
+    console.log(data);
     return (
         <Col span={14} className={cx('column-right')}>
             <div className={cx('product-media')}>
