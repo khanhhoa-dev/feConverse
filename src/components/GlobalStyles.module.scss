@@ -1,91 +1,113 @@
-//FontMain
-@font-face {
-    font-family: proxima;
-    src: url('/assets/fonts/proximanova-light-webfont-com.woff2') format('woff2');
-    font-weight: 300;
-    font-display: swap;
-}
+:global {
+    //FontMain
+    @font-face {
+        font-family: proxima;
+        src: url('/assets/fonts/proximanova-light-webfont-com.woff2') format('woff2');
+        font-weight: 300;
+        font-display: swap;
+    }
 
-@font-face {
-    font-family: proxima;
-    src: url('/assets/fonts/proximanova-regular-webfont-com.woff2') format('woff2');
-    font-weight: 400;
-    font-display: swap;
-}
+    @font-face {
+        font-family: proxima;
+        src: url('/assets/fonts/proximanova-regular-webfont-com.woff2') format('woff2');
+        font-weight: 400;
+        font-display: swap;
+    }
 
-@font-face {
-    font-family: proxima;
-    src: url('/assets/fonts/proximanova-semibold-webfont.woff') format('woff2');
-    font-weight: 500;
-    font-display: swap;
-}
+    @font-face {
+        font-family: proxima;
+        src: url('/assets/fonts/proximanova-semibold-webfont.woff') format('woff2');
+        font-weight: 500;
+        font-display: swap;
+    }
 
-@font-face {
-    font-family: proxima;
-    src: url('/assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
-    font-weight: 600;
-    font-display: swap;
-}
+    @font-face {
+        font-family: proxima;
+        src: url('/assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
+        font-weight: 600;
+        font-display: swap;
+    }
 
-@font-face {
-    font-family: proxima;
-    src: url('/assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
-    font-weight: 700;
-    font-display: swap;
-}
+    @font-face {
+        font-family: proxima;
+        src: url('/assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
+        font-weight: 700;
+        font-display: swap;
+    }
 
-@font-face {
-    font-family: proxima;
-    src: url('/assets/fonts/proximanova-extrabold-webfont-com.woff2') format('woff2');
-    font-weight: 800;
-    font-display: swap;
-}
+    @font-face {
+        font-family: proxima;
+        src: url('/assets/fonts/proximanova-extrabold-webfont-com.woff2') format('woff2');
+        font-weight: 800;
+        font-display: swap;
+    }
 
-:root {
-    --font-family: 'proxima', sans-serif;
+    :root {
+        --font-family: 'proxima', sans-serif;
 
-    --Height-Default-Header: 60px;
+        --Height-Default-Header: 60px;
 
-    --black-color: #000;
-    --hover-color: #e4e4e4;
-    --border-color: #dbdbdb;
-    --text-color: #333;
-    --white-color: #fff;
-    --item-color: #868e93;
-}
+        --black-color: #000;
+        --hover-color: #e4e4e4;
+        --border-color: #dbdbdb;
+        --text-color: #333;
+        --white-color: #fff;
+        --item-color: #868e93;
+    }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
-html {
-    font-size: 62.5%;
-}
+    html {
+        font-size: 62.5%;
+    }
 
-body {
-    font-family: var(--font-family);
-    font-size: 1.6rem;
-    line-height: 1.6rem;
-    text-rendering: optimizeSpeed;
-}
+    body {
+        font-family: var(--font-family);
+        font-size: 1.6rem;
+        line-height: 1.6rem;
+        text-rendering: optimizeSpeed;
+    }
 
-//Scroll
-/* Định dạng thanh cuộn tổng thể */
-::-webkit-scrollbar {
-    border-radius: 0;
-    width: 8px;
-}
+    //Scroll
+    /* Định dạng thanh cuộn tổng thể */
+    ::-webkit-scrollbar {
+        border-radius: 0;
+        width: 8px;
+    }
 
-/* Định dạng thanh trượt (thumb) */
-::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.15);
-}
+    /* Định dạng thanh trượt (thumb) */
+    ::-webkit-scrollbar-thumb {
+        border-radius: 4px;
+        background-color: rgba(0, 0, 0, 0.15);
+    }
 
-/* Định dạng đường ray (track) */
-::-webkit-scrollbar-track {
-    border-radius: 0;
-    background-color: rgba(0, 0, 0, 0);
+    /* Định dạng đường ray (track) */
+    ::-webkit-scrollbar-track {
+        border-radius: 0;
+        background-color: rgba(0, 0, 0, 0);
+    }
+    /* Responsive adjustments */
+    @media (max-width: 1200px) {
+        .Header-module__category___6GWEk .Header-module__item___4e9Gy {
+            font-size: 1.4rem;
+            margin: 0 10px 0 6px;
+        }
+        .Header-module__logo___d5OUB .Header-module__image-logo___2NVez {
+            width: 100px;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 900px) {
+        .Header-module__category___6GWEk {
+            display: none;
+        }
+        .Header-module__logo___d5OUB.Header-module__isToggle___4X0gG {
+            justify-content: center;
+        }
+    }
 }

@@ -9,12 +9,24 @@ export default defineConfig({
             localsConvention: 'camelCase',
             generateScopedName: '[name]__[local]___[hash:base64:5]',
         },
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@import "@/styles/variables.scss";`,
+            },
+        },
     },
     resolve: {
         alias: {
             '@': resolve(__dirname, 'src'),
         },
     },
-    // Thêm base nếu deploy vào subdirectory
     base: '/',
+    build: {
+        minify: 'terser',
+        rollupOptions: {
+            output: {
+                manualChunks: undefined,
+            },
+        },
+    },
 });
