@@ -9,11 +9,6 @@ export default defineConfig({
             localsConvention: 'camelCase',
             generateScopedName: '[name]__[local]___[hash:base64:5]',
         },
-        preprocessorOptions: {
-            scss: {
-                additionalData: `@import "@/styles/variables.scss";`,
-            },
-        },
     },
     resolve: {
         alias: {
