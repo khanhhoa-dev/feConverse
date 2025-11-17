@@ -1,4 +1,3 @@
-//FontMain
 @font-face {
     font-family: proxima;
     src: url('/assets/fonts/proximanova-light-webfont-com.woff2') format('woff2');
@@ -39,53 +38,4 @@
     src: url('/assets/fonts/proximanova-extrabold-webfont-com.woff2') format('woff2');
     font-weight: 800;
     font-display: swap;
-}
-
-:root {
-    --font-family: 'proxima', sans-serif;
-
-    --Height-Default-Header: 60px;
-
-    --black-color: #000;
-    --hover-color: #e4e4e4;
-    --border-color: #dbdbdb;
-    --text-color: #333;
-    --white-color: #fff;
-    --item-color: #868e93;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    font-size: 62.5%;
-}
-
-body {
-    font-family: var(--font-family);
-    font-size: 1.6rem;
-    line-height: 1.6rem;
-    text-rendering: optimizeSpeed;
-}
-
-//Scroll
-/* Định dạng thanh cuộn tổng thể */
-::-webkit-scrollbar {
-    border-radius: 0;
-    width: 8px;
-}
-
-/* Định dạng thanh trượt (thumb) */
-::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.15);
-}
-
-/* Định dạng đường ray (track) */
-::-webkit-scrollbar-track {
-    border-radius: 0;
-    background-color: rgba(0, 0, 0, 0);
 }
