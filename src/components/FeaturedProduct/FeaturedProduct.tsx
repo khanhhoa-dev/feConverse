@@ -9,23 +9,23 @@ import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 interface FeaturedProductProps {
-    product?: string;
+    typeProduct?: string;
     title?: string;
 }
 
-function FeaturedProduct({ product, title }: FeaturedProductProps) {
+function FeaturedProduct({ typeProduct, title }: FeaturedProductProps) {
     const [dataProducts, setDataProducts] = useState<DataSelectField[]>([]);
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const result = await featuredProduct.featured(product);
+                const result = await featuredProduct.featured(typeProduct);
                 setDataProducts(result);
             } catch (error) {
                 console.error('Error Api:', error);
             }
         };
         fetchApi();
-    }, []);
+    }, [typeProduct]);
     return (
         <div className={cx('wrapper')}>
             <h1 className={cx('title')}>{title}</h1>

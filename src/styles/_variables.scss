@@ -1,41 +1,53 @@
+:root {
+    --font-family: 'proxima', sans-serif;
+
+    --Height-Default-Header: 60px;
+
+    --black-color: #000;
+    --hover-color: #e4e4e4;
+    --border-color: #dbdbdb;
+    --text-color: #333;
+    --white-color: #fff;
+    --item-color: #868e93;
+}
 @font-face {
     font-family: proxima;
-    src: url('/assets/fonts/proximanova-light-webfont-com.woff2') format('woff2');
+    src: url('../assets/fonts/proximanova-light-webfont-com.woff2') format('woff2');
     font-weight: 300;
     font-display: swap;
 }
 
 @font-face {
     font-family: proxima;
-    src: url('/assets/fonts/proximanova-regular-webfont-com.woff2') format('woff2');
+    src: url('../assets/fonts/proximanova-regular-webfont-com.woff2') format('woff2');
     font-weight: 400;
     font-display: swap;
 }
 
 @font-face {
     font-family: proxima;
-    src: url('/assets/fonts/proximanova-semibold-webfont.woff') format('woff2');
+    src: url('../assets/fonts/proximanova-semibold-webfont.woff') format('woff');
     font-weight: 500;
     font-display: swap;
 }
 
 @font-face {
     font-family: proxima;
-    src: url('/assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
+    src: url('../assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
     font-weight: 600;
     font-display: swap;
 }
 
 @font-face {
     font-family: proxima;
-    src: url('/assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
+    src: url('../assets/fonts/proximanova-bold-webfont-com.woff2') format('woff2');
     font-weight: 700;
     font-display: swap;
 }
 
 @font-face {
     font-family: proxima;
-    src: url('/assets/fonts/proximanova-extrabold-webfont-com.woff2') format('woff2');
+    src: url('../assets/fonts/proximanova-extrabold-webfont-com.woff2') format('woff2');
     font-weight: 800;
     font-display: swap;
 }
