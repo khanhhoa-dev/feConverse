@@ -16,12 +16,4 @@ export default defineConfig({
         },
     },
     base: '/',
-    build: {
-        minify: 'terser',
-        rollupOptions: {
-            output: {
-                manualChunks: undefined,
-            },
-        },
-    },
 });
