@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { Carousel, ConfigProvider } from 'antd';
 
 import styles from './Home.module.scss';
-import config from '../../config';
+import * as Banner from '../../data/bannerAdvertisement';
 import PreviewProduct from './PreviewProduct/PreviewProduct';
 import FeaturedProduct from '../../components/FeaturedProduct/FeaturedProduct';
 import LookbookSection from './LookbookSection/LookbookSection';
 import Marketing from './Marketing/Marketing';
 
 const cx = classNames.bind(styles);
-const Banners = config.Banners;
+const Banners = Banner.Banners;
 function Home() {
     return (
         <div className={cx('wrapper')}>

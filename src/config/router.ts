@@ -3,7 +3,7 @@ const router = {
     shopping_cart: '/shopping/cart',
     pay: '/pay',
     help: '/help',
-    store_locator: '/storelocator',
+    store_locator: '/store-locator',
     register: '/account/register',
     forgot_password: '/forgot-password',
     detail_product: 'product/detail/:slug',

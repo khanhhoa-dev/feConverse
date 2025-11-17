@@ -5,12 +5,12 @@ import { Badge } from 'antd';
 import type { JSX } from 'react';
 
 import styles from './Header.module.scss';
-import config from '../../../config';
+import * as Category from '../../../data/category';
 import Search from './Search/Search';
 import Login from './Login/Login';
 import { useUser } from '../../../contexts/UserContext';
 
-const CategoryConfig = config.categoryConfig;
+const CategoryConfig = Category.categoryConfig;
 
 interface HeaderProps {
     isToggle?: boolean;

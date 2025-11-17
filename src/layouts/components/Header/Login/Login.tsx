@@ -5,7 +5,7 @@ import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps } from 'antd';
 import styles from './Login.module.scss';
 
-import { type MenuItem, CustomerMenuKey, CUSTOMER_MENU } from '../../../../config/customerMenu';
+import { type MenuItem, CustomerMenuKey, CUSTOMER_MENU } from '../../../../data/customerMenu';
 import { useUser } from '../../../../contexts/UserContext';
 
 const cx = classNames.bind(styles);

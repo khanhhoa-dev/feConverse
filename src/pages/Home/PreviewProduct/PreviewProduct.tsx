@@ -3,10 +3,10 @@ import { useState } from 'react';
 
 import styles from './PreviewProduct.module.scss';
 import { Link } from 'react-router-dom';
-import config from '../../../config';
+import * as previewProduct from '../../../data/previewProduct';
 
 const cx = classNames.bind(styles);
-const Category = config.PreviewProduct.PreviewProduct;
+const Category = previewProduct.PreviewProduct;
 
 function PreviewProduct() {
     const [stateImg, setStateImg] = useState<string>('high');
