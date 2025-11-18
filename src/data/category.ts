@@ -32,7 +32,7 @@ export const categoryConfig: Record<RouteCategory, CategoryType> = {
     [RouteCategory.storelocator]: {
         name: RouteCategory.storelocator,
         title: 'Store Locator',
-        route: '/storelocator',
+        route: '/store-locator',
     },
     [RouteCategory.help]: {
         name: RouteCategory.help,
