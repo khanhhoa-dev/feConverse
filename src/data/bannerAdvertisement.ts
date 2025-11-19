@@ -5,7 +5,7 @@ interface IBanner {
 
 export const Banners: Record<string, IBanner> = {
     Sale: {
-        image: 'https://www.converse.vn/media/weltpixel/owlcarouselslider/images/d/e/dekstop_design_main_banner_2__4.jpg',
+        image: 'https://www.converse.vn/media/weltpixel/owlcarouselslider/images/d/e/dekstop_4__8.jpg',
         link: 'shoes',
     },
     CocaShoes: {
