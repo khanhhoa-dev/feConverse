@@ -12,6 +12,7 @@ import Register from '../pages/Register/Register';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import Profile from '../pages/Profile/Profile';
 import AddProduct from '../pages/AddProduct/AddProduct';
+import UpdateProduct from '../pages/UpdateProduct/UpdateProduct';
 import type { LayoutProps } from '../ts';
 
 import config from '../config';
@@ -34,5 +35,6 @@ export const publicRoute: Route[] = [
     { path: config.router.register, component: Register, layout: OnlyHeader },
     { path: config.router.add_product, component: AddProduct, layout: OnlyHeader },
     { path: config.router.profile, component: Profile },
+    { path: config.router.update_product, component: UpdateProduct, layout: OnlyHeader },
 ];
 export const privateRoute = [];

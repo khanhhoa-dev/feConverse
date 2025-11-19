@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Row, Col, Button, Select, message } from 'antd';
 import { ShoppingOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
@@ -8,6 +8,7 @@ import styles from './DetailProduct.module.scss';
 import * as GetDetailProduct from '../../services/detailProduct';
 import FeaturedProduct from '../../components/FeaturedProduct/FeaturedProduct';
 import type { IProductDetail } from '../../ts';
+import { useUser } from '../../contexts/UserContext';
 
 const cx = classNames.bind(styles);
 
@@ -18,6 +19,7 @@ function DetailProduct() {
     const [dataDetail, setDataDetail] = useState<IProductDetail | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
+    const { role } = useUser();
 
     useEffect(() => {
         if (!slug) {
@@ -184,6 +186,21 @@ function DetailProduct() {
                                 <ShoppingOutlined />
                             </Button>
                         </div>
+                        {role === 'admin' && (
+                            <div className={cx('add-shopping-cart')}>
+                                <Link to={`/update/${dataDetail?.slug}`}>
+                                    <Button
+                                        danger
+                                        type="primary"
+                                        block
+                                        className={cx('btn')}
+                                        style={{ marginTop: '20px' }}
+                                    >
+                                        Update Products
+                                    </Button>
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </Col>
             </Row>

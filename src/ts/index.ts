@@ -27,12 +27,13 @@ export interface IProductDetail {
     price: string;
     gender: string;
     title: string;
-    styles: string;
+    style: string;
     type: string;
     product: string;
     image: string;
     description: string;
     featured: boolean;
+    slug: string;
     variant: IVariant[];
 }
 
