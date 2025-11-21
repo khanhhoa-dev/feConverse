@@ -108,7 +108,7 @@ function Login() {
                 centered
                 styles={{
                     body: { padding: '20px' },
-                    mask: { backgroundColor: 'rgba(0,0,0,0.5)' }, // Sửa dấu ) thiếu
+                    mask: { backgroundColor: 'rgba(0,0,0,0.5)' },
                 }}
             >
                 <div style={{ textAlign: 'center', marginBottom: 16 }}>

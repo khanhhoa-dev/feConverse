@@ -33,7 +33,7 @@ function ProductView({ product }: { product: 'shoes' | 'clothing' | 'accessories
             };
 
             fetchApi();
-        }, 1000);
+        }, 500);
     }, [product, gender, type, style, page]);
 
     const handleChangePage = (pageTotal: number) => {

@@ -44,6 +44,7 @@
                     margin-top: 4px;
                     font-size: 2.6rem;
                     font-weight: 400;
+                    line-height: 1.4;
                 }
             }
             .product-price {
@@ -66,13 +67,13 @@
                 margin-bottom: 20px;
                 .list-img {
                     display: flex;
-                    width: 100px;
-                    height: 100px;
+                    flex-wrap: wrap;
+                    gap: 10px;
                     .image-color {
                         cursor: pointer;
                         margin: 0px 14px 10px 0;
-                        width: 100%;
-                        height: 100%;
+                        width: 100px;
+                        height: 100px;
                         object-fit: contain;
                         border-bottom: 2px solid transparent;
                     }
@@ -122,8 +123,25 @@
                 }
             }
             .add-shopping-cart {
+                margin: 10px;
                 border-top: 1px solid var(--border-color);
                 .btn {
+                    font-size: 1.6rem;
+                    font-weight: 500;
+                    padding: 20px 0;
+                }
+            }
+            .admin-action {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .wrap-btn {
+                    flex: 1;
+                    width: 100%;
+                    margin: 10px;
+                }
+                .btn-update,
+                .btn-delete {
                     font-size: 1.6rem;
                     font-weight: 500;
                     padding: 20px 0;
@@ -134,5 +152,8 @@
     .label {
         font-size: 1.8rem;
         margin-bottom: 16px;
+    }
+    .ant-modal-root {
+        z-index: 9999 !important;
     }
 }

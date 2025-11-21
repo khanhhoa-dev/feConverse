@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { Form, Input, Select, Space, Switch, Button, message } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, PlusOutlined, DoubleLeftOutlined } from '@ant-design/icons';
 
 import type { IProductDetail } from '../../ts';
 import * as DetailProduct from '../../services/detailProduct';
@@ -43,8 +43,15 @@ function UpdateProduct() {
             return;
         }
         UpdateProductService.updateProduct(slug, values);
-        messageApi.success('Product updated successfully!');
-        navigate(`/products/${productData?.product}`);
+        messageApi.success({
+            content: 'Product updated successfully!',
+            duration: 4,
+            style: {
+                fontSize: '1.4rem',
+                fontWeight: '600',
+            },
+        });
+        navigate(`/product/detail/${slug}`);
     };
 
     // Xử lý khi submit form thất bại
@@ -54,7 +61,12 @@ function UpdateProduct() {
 
     return (
         <div className={cx('wrapper')}>
-            <h1 className={cx('title')}>Update Product</h1>
+            <h1 className={cx('title')}>
+                <Link to={`/product/detail/${slug}`}>
+                    <DoubleLeftOutlined className={cx('icon-arrow')} />
+                </Link>
+                Update Product
+            </h1>
             <div className={cx('form-container')}>
                 <Form
                     layout="vertical"

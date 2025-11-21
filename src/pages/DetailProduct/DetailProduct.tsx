@@ -9,9 +9,9 @@ import * as GetDetailProduct from '../../services/detailProduct';
 import FeaturedProduct from '../../components/FeaturedProduct/FeaturedProduct';
 import type { IProductDetail } from '../../ts';
 import { useUser } from '../../contexts/UserContext';
+import DeleteProduct from './DeleteProduct';
 
 const cx = classNames.bind(styles);
-
 function DetailProduct() {
     const { slug } = useParams();
     const [quantity, setQuantity] = useState<number>(1);
@@ -89,11 +89,13 @@ function DetailProduct() {
             },
         });
     };
+
     const findImgProduct =
         dataDetail?.variant.find((data) => data.color === imgProductColor) ||
         dataDetail?.variant[0];
     return (
         <div className={cx('wrapper')}>
+            {contextHolder}
             <Row>
                 <Col span={14} className={cx('column-right')}>
                     <div className={cx('product-media')}>
@@ -173,7 +175,7 @@ function DetailProduct() {
                                 {findImgProduct?.quantity} products available
                             </h3>
                         </div>
-                        {contextHolder}
+
                         <div className={cx('add-shopping-cart')}>
                             <Button
                                 danger
@@ -187,18 +189,19 @@ function DetailProduct() {
                             </Button>
                         </div>
                         {role === 'admin' && (
-                            <div className={cx('add-shopping-cart')}>
-                                <Link to={`/update/${dataDetail?.slug}`}>
+                            <div className={cx('admin-action')}>
+                                <Link to={`/update/${dataDetail?.slug}`} className={cx('wrap-btn')}>
                                     <Button
                                         danger
                                         type="primary"
                                         block
-                                        className={cx('btn')}
-                                        style={{ marginTop: '20px' }}
+                                        style={{ marginTop: '30px' }}
+                                        className={cx('btn-update')}
                                     >
                                         Update Products
                                     </Button>
                                 </Link>
+                                <DeleteProduct data={dataDetail as IProductDetail} />
                             </div>
                         )}
                     </div>

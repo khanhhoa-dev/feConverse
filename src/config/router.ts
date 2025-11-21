@@ -9,6 +9,7 @@ const router = {
     forgot_password: '/forgot-password',
     detail_product: 'product/detail/:slug',
     profile: '/profile',
+    deleted_product: '/deleted-products',
     add_product: '/add/product',
     home: '/',
 };

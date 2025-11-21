@@ -3,11 +3,18 @@
     flex-direction: column;
     padding: 20px;
     .title {
+        display: flex;
+        align-items: center;
         font-size: 3rem;
         font-weight: 800;
         width: 100%;
         padding: 10px;
         color: var(--text-color);
+        .icon-arrow {
+            font-size: 2.4rem;
+            margin-right: 10px;
+            color: var(--black-color);
+        }
     }
     .form-container {
         border-radius: 4px;

@@ -1,6 +1,7 @@
 import classNames from 'classnames/bind';
 import { Form, Input, Select, Space, Switch, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './AddProduct.module.scss';
 import type { IProductDetail } from '../../ts/index';
@@ -10,6 +11,7 @@ const cx = classNames.bind(styles);
 const { TextArea } = Input;
 function AddProduct() {
     const [form] = Form.useForm();
+    const navigate = useNavigate();
     const onFinish = (values: any) => {
         //Format data size from string to array
         const formatData: IProductDetail = {
@@ -24,6 +26,7 @@ function AddProduct() {
 
         //Call API create product
         createProduct(formatData);
+        navigate(`/products/${formatData.product}`);
     };
 
     const onFinishFailed = (errorInfo: any) => {
