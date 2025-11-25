@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Row, Col, Button, Select, message } from 'antd';
 import { ShoppingOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
@@ -8,18 +8,18 @@ import styles from './DetailProduct.module.scss';
 import * as GetDetailProduct from '../../services/detailProduct';
 import FeaturedProduct from '../../components/FeaturedProduct/FeaturedProduct';
 import type { IProductDetail } from '../../ts';
-import { useUser } from '../../contexts/UserContext';
-import DeleteProduct from './DeleteProduct';
+import { useCartItem } from '../../contexts/CartContext';
+import * as ItemCart from '../../services/itemCart';
 
 const cx = classNames.bind(styles);
 function DetailProduct() {
+    const { setTotalCart } = useCartItem();
     const { slug } = useParams();
     const [quantity, setQuantity] = useState<number>(1);
     const [imgProductColor, setImgProductColor] = useState<string>('');
     const [dataDetail, setDataDetail] = useState<IProductDetail | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
-    const { role } = useUser();
 
     useEffect(() => {
         if (!slug) {
@@ -48,7 +48,11 @@ function DetailProduct() {
         setSelectedSize(null);
     };
 
-    const handleAddToCart = () => {
+    const findImgProduct =
+        dataDetail?.variant.find((data) => data.color === imgProductColor) ||
+        dataDetail?.variant[0];
+
+    const handleAddToCart = async () => {
         if (!dataDetail || !findImgProduct) {
             return;
         }
@@ -64,22 +68,17 @@ function DetailProduct() {
             return;
         }
 
-        //Loại bỏ dấu "," ở price
-        const rawPrice = dataDetail?.price || '1';
-        const numericPrice = Number(rawPrice.replace(/,/g, ''));
-
         const payload = {
             productId: dataDetail?._id,
             name: dataDetail?.name,
-            price: numericPrice * quantity,
+            price: dataDetail?.price,
             quantity,
             color: findImgProduct?.color,
             image: findImgProduct?.img_detail,
             size: selectedSize,
         };
-
-        console.log('Cart Detail:', payload);
-
+        const result = await ItemCart.AddItemCart(payload);
+        setTotalCart(result.totalCart);
         messageApi.success({
             content: 'Add product to cart successfully',
             duration: 4,
@@ -90,9 +89,6 @@ function DetailProduct() {
         });
     };
 
-    const findImgProduct =
-        dataDetail?.variant.find((data) => data.color === imgProductColor) ||
-        dataDetail?.variant[0];
     return (
         <div className={cx('wrapper')}>
             {contextHolder}
@@ -188,22 +184,6 @@ function DetailProduct() {
                                 <ShoppingOutlined />
                             </Button>
                         </div>
-                        {role === 'admin' && (
-                            <div className={cx('admin-action')}>
-                                <Link to={`/update/${dataDetail?.slug}`} className={cx('wrap-btn')}>
-                                    <Button
-                                        danger
-                                        type="primary"
-                                        block
-                                        style={{ marginTop: '30px' }}
-                                        className={cx('btn-update')}
-                                    >
-                                        Update Products
-                                    </Button>
-                                </Link>
-                                <DeleteProduct data={dataDetail as IProductDetail} />
-                            </div>
-                        )}
                     </div>
                 </Col>
             </Row>

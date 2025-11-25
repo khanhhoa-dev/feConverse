@@ -66,17 +66,17 @@
     height: 100%;
 }
 
-.shopping-cart {
+.items-cart {
     flex: 0;
     position: relative;
 }
 
-.icon-shopping-cart {
+.icon-items-cart {
     padding: 0 8px 0 16px;
     font-size: 1.9rem;
 }
 
-.icon-shopping-cart,
+.icon-items-cart,
 .icon-search {
     cursor: pointer;
     color: var(--text-color);

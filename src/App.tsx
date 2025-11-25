@@ -5,38 +5,41 @@ import { publicRoute } from './routes';
 import DefaultLayout from './layouts/DefaultLayout/DefaultLayout';
 import type { LayoutProps } from './ts';
 import { UserProvider } from './contexts/UserContext';
+import { CartProvider } from './contexts/CartContext';
 
 function App(): JSX.Element {
     return (
         <UserProvider>
-            <BrowserRouter
-                future={{
-                    v7_relativeSplatPath: true,
-                    v7_startTransition: true,
-                }}
-            >
-                <Routes>
-                    {publicRoute.map((route, i) => {
-                        let Layout: ComponentType<LayoutProps> = DefaultLayout;
-                        const Page: ComponentType = route.component;
+            <CartProvider>
+                <BrowserRouter
+                    future={{
+                        v7_relativeSplatPath: true,
+                        v7_startTransition: true,
+                    }}
+                >
+                    <Routes>
+                        {publicRoute.map((route, i) => {
+                            let Layout: ComponentType<LayoutProps> = DefaultLayout;
+                            const Page: ComponentType = route.component;
 
-                        if (route.layout) {
-                            Layout = route.layout;
-                        }
-                        return (
-                            <Route
-                                key={i}
-                                path={route.path}
-                                element={
-                                    <Layout>
-                                        <Page />
-                                    </Layout>
-                                }
-                            />
-                        );
-                    })}
-                </Routes>
-            </BrowserRouter>
+                            if (route.layout) {
+                                Layout = route.layout;
+                            }
+                            return (
+                                <Route
+                                    key={i}
+                                    path={route.path}
+                                    element={
+                                        <Layout>
+                                            <Page />
+                                        </Layout>
+                                    }
+                                />
+                            );
+                        })}
+                    </Routes>
+                </BrowserRouter>
+            </CartProvider>
         </UserProvider>
     );
 }

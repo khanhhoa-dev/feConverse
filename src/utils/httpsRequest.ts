@@ -12,9 +12,9 @@ export const get = async <T = any>(path: string, option: AxiosRequestConfig = {}
 };
 
 //[POST]
-export const post = async <T = any>(
+export const post = async <T = any, D = any>(
     path: string,
-    data: IProductDetail,
+    data: D,
     option: AxiosRequestConfig = {}
 ) => {
     const result = await httpsRequest.post<T>(path, data, option);

@@ -2,13 +2,16 @@ import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge } from 'antd';
-import type { JSX } from 'react';
+import { useEffect, useState, type JSX } from 'react';
 
 import styles from './Header.module.scss';
 import * as Category from '../../../data/category';
 import Search from './Search/Search';
 import Login from './Login/Login';
 import { useUser } from '../../../contexts/UserContext';
+import * as ItemCart from '../../../services/itemCart';
+import type { GetItemCartResponse } from '../../../pages/ItemsCart/ItemsCart';
+import { useCartItem } from '../../../contexts/CartContext';
 
 const CategoryConfig = Category.categoryConfig;
 
@@ -19,6 +22,15 @@ const cx = classNames.bind(styles);
 
 function Header({ isToggle }: HeaderProps): JSX.Element {
     const { LoginIn } = useUser();
+    const [totalItemCart, setTotalItemCart] = useState<GetItemCartResponse | null>(null);
+    const { totalCart } = useCartItem();
+    useEffect(() => {
+        const fetchTotalCart = async () => {
+            const totalItem = await ItemCart.GetItemCart();
+            setTotalItemCart(totalItem);
+        };
+        fetchTotalCart();
+    }, [totalCart]);
     return (
         <header
             className={cx('wrapper', {
@@ -64,13 +76,20 @@ function Header({ isToggle }: HeaderProps): JSX.Element {
                     <div className={cx('login-search')}>
                         <Search />
                         {LoginIn && (
-                            <div className={cx('shopping-cart')}>
-                                <Badge count={4} size="small" offset={[-8, 1]} color="#00BCD4">
-                                    <ShoppingCartOutlined
-                                        className={cx('icon-shopping-cart')}
-                                        style={{ fontSize: '24px' }}
-                                    />
-                                </Badge>
+                            <div className={cx('items-cart')}>
+                                <Link to="/items-cart">
+                                    <Badge
+                                        count={totalItemCart?.totalCart}
+                                        size="small"
+                                        offset={[-8, 1]}
+                                        color="#00BCD4"
+                                    >
+                                        <ShoppingCartOutlined
+                                            className={cx('icon-items-cart')}
+                                            style={{ fontSize: '24px' }}
+                                        />
+                                    </Badge>
+                                </Link>
                             </div>
                         )}
                         <Login />

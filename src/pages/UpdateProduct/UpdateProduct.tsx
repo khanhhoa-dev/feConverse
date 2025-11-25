@@ -38,7 +38,6 @@ function UpdateProduct() {
 
     // Xử lý khi submit form
     const onFinish = (values: IProductDetail) => {
-        console.log('Form values:', values);
         if (!slug) {
             return;
         }
@@ -62,7 +61,7 @@ function UpdateProduct() {
     return (
         <div className={cx('wrapper')}>
             <h1 className={cx('title')}>
-                <Link to={`/product/detail/${slug}`}>
+                <Link to={`/manage-products`}>
                     <DoubleLeftOutlined className={cx('icon-arrow')} />
                 </Link>
                 Update Product

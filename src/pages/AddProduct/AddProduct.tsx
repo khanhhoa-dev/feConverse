@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { Form, Input, Select, Space, Switch, Button } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { MinusCircleOutlined, PlusOutlined, DoubleLeftOutlined } from '@ant-design/icons';
+import { useNavigate, Link } from 'react-router-dom';
 
 import styles from './AddProduct.module.scss';
 import type { IProductDetail } from '../../ts/index';
@@ -34,7 +34,12 @@ function AddProduct() {
     };
     return (
         <div className={cx('wrapper')}>
-            <h1 className={cx('title')}>Add Product</h1>
+            <h1 className={cx('title')}>
+                <Link to={'/manage-products'}>
+                    <DoubleLeftOutlined className={cx('icon')} />
+                </Link>
+                Add product
+            </h1>
             <div className={cx('form-container')}>
                 <Form
                     layout="vertical"

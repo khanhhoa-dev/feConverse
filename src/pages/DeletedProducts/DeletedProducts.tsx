@@ -82,13 +82,13 @@ function DeletedProducts() {
         <div className={cx('wrapper')}>
             {contextHolder}
             <div className={cx('title')}>
-                <Link to={'/'} className={cx('icon')}>
+                <Link to={'/manage-products'} className={cx('icon')}>
                     <DoubleLeftOutlined />
                 </Link>
-                <h1 className={cx('text')}>Trash Can</h1>
+                <h1 className={cx('text')}>Trash can</h1>
             </div>
             <div className={cx('header')}>
-                <h2 className={cx('title-header')}>List Product</h2>
+                <h2 className={cx('title-header')}>List product</h2>
             </div>
             <div className={cx('container')}>
                 {checkData ? (

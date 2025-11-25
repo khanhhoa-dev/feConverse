@@ -1,8 +1,7 @@
 //Enum-like
 export enum CustomerMenuKey {
     MyAccount = 'my-account',
-    AddProduct = 'add-product',
-    DeletedProducts = 'deletes-products',
+    ManageProducts = 'manage-products',
     Logout = 'logout',
 }
 
@@ -20,16 +19,10 @@ export const CUSTOMER_MENU: Record<CustomerMenuKey, MenuItem> = {
         route: '/profile',
         requiredRole: ['user', 'admin'],
     },
-    [CustomerMenuKey.AddProduct]: {
-        key: CustomerMenuKey.AddProduct,
-        label: 'Add-Product',
-        route: '/add/product',
-        requiredRole: ['admin'],
-    },
-    [CustomerMenuKey.DeletedProducts]: {
-        key: CustomerMenuKey.DeletedProducts,
-        label: 'Deleted-Products',
-        route: '/deleted-products',
+    [CustomerMenuKey.ManageProducts]: {
+        key: CustomerMenuKey.ManageProducts,
+        label: 'Manage-Products',
+        route: '/manage-products',
         requiredRole: ['admin'],
     },
     [CustomerMenuKey.Logout]: {
