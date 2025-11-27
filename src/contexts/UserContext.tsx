@@ -23,7 +23,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setRole(newRole);
     }, []);
     return (
-        <UserContext.Provider value={{ role, setRole: updateRole, LoginIn: true }}>
+        <UserContext.Provider value={{ role, setRole: updateRole, LoginIn: false }}>
             {children}
         </UserContext.Provider>
     );

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps } from 'antd';
 import styles from './Login.module.scss';
 
@@ -129,24 +129,19 @@ function Login() {
                     autoComplete="off"
                 >
                     <Form.Item
-                        label="Email"
-                        name="email"
-                        rules={[
-                            { required: true, message: 'Please input your email!' },
-                            { type: 'email', message: 'Invalid email!' },
-                        ]}
+                        label="Username"
+                        name="username"
+                        rules={[{ required: true, message: 'Please input your username!' }]}
+                        required={false}
                     >
-                        <Input
-                            prefix={<MailOutlined />}
-                            className={cx('input-login')}
-                            placeholder="Enter your email"
-                        />
+                        <Input className={cx('input-login')} placeholder="Enter your username" />
                     </Form.Item>
 
                     <Form.Item
                         label="Password"
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
+                        required={false}
                     >
                         <Input.Password
                             prefix={<LockOutlined />}

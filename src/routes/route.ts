@@ -34,7 +34,7 @@ export const publicRoute: Route[] = [
     { path: config.router.help, component: Help },
     { path: config.router.detail_product, component: DetailProduct },
     { path: config.router.forgot_password, component: ForgotPassword, layout: OnlyHeader },
-    { path: config.router.register, component: Register, layout: OnlyHeader },
+    { path: config.router.register, component: Register },
     { path: config.router.add_product, component: AddProduct, layout: OnlyHeader },
     { path: config.router.profile, component: Profile },
     { path: config.router.update_product, component: UpdateProduct, layout: OnlyHeader },
