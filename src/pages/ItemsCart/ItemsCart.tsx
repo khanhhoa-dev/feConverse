@@ -151,6 +151,7 @@ function ItemsCart() {
             return;
         }
         setCheckOutItems(selectedProductCheckOut);
+        localStorage.setItem('checkoutProduct', JSON.stringify(selectedProductCheckOut));
         navigate('/pay');
     };
 
