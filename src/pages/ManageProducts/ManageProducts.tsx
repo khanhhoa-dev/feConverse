@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import type { IProductDetail } from '../../ts';
 import { allProducts } from '../../services/products';
 import { deleteSoftProduct } from '../../services/deleteSoftProduct';
+import { useLoginSelector } from '../../hooks/useAppSelector';
 
 const cx = classNames.bind(styles);
 
@@ -17,12 +18,14 @@ function ManageProducts() {
     const [openModel, setOpenModel] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
+    const userData = useLoginSelector();
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchAllProduct = async () => {
+            const token = userData?.accessToken as string;
             try {
-                const data = await allProducts();
+                const data = await allProducts(token);
                 setDataProduct(data || []);
             } catch (error) {
                 console.log('Error:', error);

@@ -9,11 +9,13 @@ import styles from './ItemsCart.module.scss';
 import { Link } from 'react-router-dom';
 import * as ItemCart from '../../services/itemCart';
 import { useCartItem } from '../../contexts/CartContext';
+import { useLoginSelector } from '../../hooks/useAppSelector';
 
 const cx = classNames.bind(styles);
 
 export interface IItemCart {
     _id: string;
+    userId: string;
     productId: string;
     name: string;
     quantity: number;
@@ -24,15 +26,16 @@ export interface IItemCart {
 }
 export interface GetItemCartResponse {
     dataCart: IItemCart[];
-    totalCart: number;
+    totalCart?: number;
 }
 
 function ItemsCart() {
-    const [dataSource, setDataSource] = useState<IItemCart[] | null>(null);
-    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+    const navigate = useNavigate();
+    const userData = useLoginSelector();
     const [messageApi, contextHolder] = message.useMessage();
     const { setCheckOutItems, setTotalCart } = useCartItem();
-    const navigate = useNavigate();
+    const [dataSource, setDataSource] = useState<IItemCart[] | null>(null);
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
     const columns: ColumnsType<IItemCart> = [
         {
@@ -112,7 +115,7 @@ function ItemsCart() {
     useEffect(() => {
         const fetchApiItem = async () => {
             try {
-                const data = await ItemCart.GetItemCart();
+                const data = await ItemCart.GetItemCart(userData?.accessToken!);
                 setDataSource(data.dataCart);
             } catch (error) {
                 console.log('Error:', error);
@@ -129,7 +132,7 @@ function ItemsCart() {
     };
 
     const handleDeleteItemCart = (id: string) => {
-        ItemCart.DeleteItemCart(id);
+        ItemCart.DeleteItemCart(id, userData?.accessToken!);
         const setDataCart = dataSource?.filter((item) => item._id !== id) || [];
         setDataSource(setDataCart);
         setTotalCart(dataSource?.length!);

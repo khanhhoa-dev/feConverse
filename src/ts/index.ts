@@ -43,3 +43,14 @@ export interface IProductResponsive {
     totalPages: number;
     products: DataSelectField[];
 }
+
+export interface IAuthUser {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    username: string;
+    email: string;
+    admin: boolean;
+    gender: string;
+    accessToken: string;
+}

@@ -2,29 +2,54 @@ import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps } from 'antd';
+import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps, message } from 'antd';
 import styles from './Login.module.scss';
 
 import { type MenuItem, CustomerMenuKey, CUSTOMER_MENU } from '../../../../data/customerMenu';
-import { useUser } from '../../../../contexts/UserContext';
+import type { ILoginError } from '../../../../stores/Slices/authSlice';
+import { fetchLogin, fetchLogout } from '../../../../stores/Slices/authSlice';
+import { useAppDispatch } from '../../../../hooks/useAppDispatch';
+import { useLoginSelector } from '../../../../hooks/useAppSelector';
 
 const cx = classNames.bind(styles);
 
-function Login() {
-    const [isLoginVisible, setIsLoginVisible] = useState<boolean>(false);
-    const [form] = Form.useForm<{ email: string; password: string }>();
-    const navigate = useNavigate();
-    const { role, setRole, LoginIn } = useUser();
+export interface ILogin {
+    username: string;
+    password: string;
+}
 
-    // Optimize onFinish để tránh re-render thừa
+function Login() {
+    const navigate = useNavigate();
+    const userData = useLoginSelector();
+    const dispatch = useAppDispatch();
+    const [form] = Form.useForm<ILogin>();
+    const [messageApi, contextHolder] = message.useMessage();
+    const [isLoginVisible, setIsLoginVisible] = useState<boolean>(false);
+
     const onFinish = useCallback(
-        (values: { email: string; password: string }) => {
-            console.log('Login values:', values);
-            setRole('admin');
-            form.resetFields();
-            setIsLoginVisible(false);
+        async (values: ILogin) => {
+            try {
+                await dispatch(fetchLogin(values)).unwrap();
+                form.resetFields();
+                messageApi.success({
+                    content: 'Login Successfully!',
+                    style: {
+                        fontSize: 14,
+                        fontWeight: 600,
+                    },
+                });
+                setIsLoginVisible(false);
+            } catch (error) {
+                const err = error as ILoginError;
+                form.setFields([
+                    {
+                        name: err.field,
+                        errors: [err.message],
+                    },
+                ]);
+            }
         },
-        [form, setRole]
+        [form]
     );
 
     const onFinishFailed = useCallback((errorInfo: any) => {
@@ -32,26 +57,42 @@ function Login() {
     }, []);
 
     const handleOnClickShow = useCallback(() => {
-        LoginIn ? setIsLoginVisible(false) : setIsLoginVisible(true);
-    }, [LoginIn]);
+        if (!userData) {
+            form.resetFields();
+            setIsLoginVisible(true);
+        } else {
+            setIsLoginVisible(false);
+        }
+    }, [userData]);
 
     const filteredMenu = Object.values(CUSTOMER_MENU).filter((item: MenuItem) => {
-        if (!item.requiredRole) return true;
-        return item.requiredRole.includes(role);
+        //Authorization
+        if (userData?.admin) {
+            return item.requiredRole?.includes('admin');
+        } else {
+            return item.requiredRole?.includes('user');
+        }
     });
 
     const handleMenuClick = useCallback(
-        ({ key }: { key: React.Key }) => {
+        async ({ key }: { key: React.Key }) => {
             const item = CUSTOMER_MENU[key as CustomerMenuKey];
             if (item && item.route) {
                 navigate(item.route);
             } else if (key === CustomerMenuKey.Logout) {
-                localStorage.removeItem('token');
-                setRole('user');
+                await dispatch(fetchLogout(userData?.accessToken!));
+                form.resetFields();
+                messageApi.success({
+                    content: 'Logout Successfully!',
+                    style: {
+                        fontSize: 14,
+                        fontWeight: 600,
+                    },
+                });
                 navigate('/');
             }
         },
-        [navigate, setRole]
+        [navigate]
     );
 
     const menuItems: MenuProps['items'] = filteredMenu.map((item: MenuItem) => ({
@@ -62,7 +103,8 @@ function Login() {
     return (
         <>
             <div className={cx('login')} onClick={handleOnClickShow}>
-                {LoginIn ? (
+                {contextHolder}
+                {userData ? (
                     <Dropdown
                         menu={{
                             items: menuItems,
@@ -76,7 +118,7 @@ function Login() {
                         }}
                     >
                         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                            <h1 className={cx('text-login')}>Hey, Lê</h1>
+                            <h1 className={cx('text-login')}>Hey, {userData.firstname}</h1>
                             <UserOutlined className={cx('icon-user')} />
                         </div>
                     </Dropdown>
@@ -102,7 +144,9 @@ function Login() {
                     </Space>
                 }
                 open={isLoginVisible}
-                onCancel={() => setIsLoginVisible(false)}
+                onCancel={() => {
+                    setIsLoginVisible(false);
+                }}
                 footer={null}
                 width={400}
                 centered

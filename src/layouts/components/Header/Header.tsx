@@ -8,10 +8,10 @@ import styles from './Header.module.scss';
 import * as Category from '../../../data/category';
 import Search from './Search/Search';
 import Login from './Login/Login';
-import { useUser } from '../../../contexts/UserContext';
 import * as ItemCart from '../../../services/itemCart';
 import type { GetItemCartResponse } from '../../../pages/ItemsCart/ItemsCart';
 import { useCartItem } from '../../../contexts/CartContext';
+import { useLoginSelector } from '../../../hooks/useAppSelector';
 
 const CategoryConfig = Category.categoryConfig;
 
@@ -21,16 +21,17 @@ interface HeaderProps {
 const cx = classNames.bind(styles);
 
 function Header({ isToggle }: HeaderProps): JSX.Element {
-    const { LoginIn } = useUser();
+    const userData = useLoginSelector();
     const [totalItemCart, setTotalItemCart] = useState<GetItemCartResponse | null>(null);
     const { totalCart } = useCartItem();
     useEffect(() => {
         const fetchTotalCart = async () => {
-            const totalItem = await ItemCart.GetItemCart();
+            const totalItem = await ItemCart.GetItemCart(userData?.accessToken!);
             setTotalItemCart(totalItem);
         };
         fetchTotalCart();
-    }, [totalCart]);
+    }, [totalCart, userData?.accessToken]);
+
     return (
         <header
             className={cx('wrapper', {
@@ -75,7 +76,7 @@ function Header({ isToggle }: HeaderProps): JSX.Element {
                     </div>
                     <div className={cx('login-search')}>
                         <Search />
-                        {LoginIn && (
+                        {userData && (
                             <div className={cx('items-cart')}>
                                 <Link to="/items-cart">
                                     <Badge

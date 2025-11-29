@@ -2,6 +2,7 @@ import * as httpsRequest from '../utils/httpsRequest';
 import type { GetItemCartResponse } from '../pages/ItemsCart/ItemsCart';
 
 export interface IPayLoadItemCart {
+    userId: string;
     productId: string;
     name: string;
     quantity: number;
@@ -17,9 +18,13 @@ export interface IAddItemCart {
 }
 
 //[GET]: /items-cart
-export const GetItemCart = async () => {
+export const GetItemCart = async (token: string) => {
     try {
-        const result = await httpsRequest.get<GetItemCartResponse>('/items-cart');
+        const result = await httpsRequest.get<GetItemCartResponse>('/items-cart/', {
+            headers: {
+                token: `Bearer ${token}`,
+            },
+        });
         return result;
     } catch (error) {
         console.log('Error', error);
@@ -28,9 +33,13 @@ export const GetItemCart = async () => {
 };
 
 //[DELETE]: /items-cart/delete/:id
-export const DeleteItemCart = async (id: string) => {
+export const DeleteItemCart = async (id: string, token: string) => {
     try {
-        const result = await httpsRequest.del(`/items-cart/delete/${id}`);
+        const result = await httpsRequest.del(`/items-cart/delete/${id}`, {
+            headers: {
+                token: `Bearer ${token}`,
+            },
+        });
         return result;
     } catch (error) {
         console.log('Error', error);

@@ -1,8 +1,62 @@
+import { jwtDecode } from 'jwt-decode';
 import axios, { type AxiosRequestConfig } from 'axios';
+
+import { store } from '../stores/store';
+import type { RootState } from '../stores/store';
 import type { IProductDetail } from '../ts/index';
+import { updateAccessToken } from '../stores/Slices/authSlice';
+
+interface RefreshResponse {
+    accessToken: string;
+}
 
 const httpsRequest = axios.create({
     baseURL: import.meta.env.VITE_CONVERSE_BASE_API as string,
+    withCredentials: true,
+});
+
+// [Check token expire]
+const isTokenExpire = (token: string): boolean => {
+    if (!token) return true;
+    try {
+        const decodedToken: { exp: number } = jwtDecode(token);
+        const timeNow = Math.floor(Date.now() / 1000);
+        return timeNow >= decodedToken.exp;
+    } catch (error) {
+        console.warn('Invalid token, treating as expired');
+        return true;
+    }
+};
+
+// [Call Api refresh token]
+const refreshAccessToken = async (): Promise<RefreshResponse> => {
+    const response = await axios.post(
+        `${import.meta.env.VITE_CONVERSE_BASE_API}/auth/refresh`,
+        {},
+        { withCredentials: true }
+    );
+    return response.data;
+};
+
+//[Auto Refresh Token Expire]
+httpsRequest.interceptors.request.use(async (config) => {
+    const userData = (store.getState() as RootState).auth.login.data;
+
+    let tokenRefresh = userData?.accessToken;
+    if (tokenRefresh && isTokenExpire(tokenRefresh)) {
+        try {
+            const refreshData = await refreshAccessToken();
+            store.dispatch(updateAccessToken({ accessToken: refreshData.accessToken }));
+            tokenRefresh = refreshData.accessToken;
+        } catch (error) {
+            console.error('Refresh failed:', error);
+        }
+    }
+    if (tokenRefresh) {
+        config.headers = config.headers || {};
+        config.headers.token = `Bearer ${tokenRefresh}`;
+    }
+    return config;
 });
 
 //[GET]

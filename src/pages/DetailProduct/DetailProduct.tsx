@@ -10,12 +10,21 @@ import FeaturedProduct from '../../components/FeaturedProduct/FeaturedProduct';
 import type { IProductDetail } from '../../ts';
 import { useCartItem } from '../../contexts/CartContext';
 import * as ItemCart from '../../services/itemCart';
+import { useLoginSelector } from '../../hooks/useAppSelector';
+import * as Product from '../../services/products';
 
 const cx = classNames.bind(styles);
+export interface IUpdateProduct {
+    productId: string;
+    color: string;
+    quantity: number;
+}
+
 function DetailProduct() {
-    const { setTotalCart } = useCartItem();
     const { slug } = useParams();
-    const [quantity, setQuantity] = useState<number>(1);
+    const { setTotalCart } = useCartItem();
+    const userData = useLoginSelector();
+    const [quantityProduct, setQuantityProduct] = useState<number>(1);
     const [imgProductColor, setImgProductColor] = useState<string>('');
     const [dataDetail, setDataDetail] = useState<IProductDetail | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -29,22 +38,22 @@ function DetailProduct() {
             const data = await GetDetailProduct.detail(slug);
             setDataDetail(data);
             setSelectedSize(null);
-            setQuantity(1);
+            setQuantityProduct(1);
         };
         fetchApi();
     }, [slug]);
 
     const handleClickMinus = () => {
-        setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+        setQuantityProduct((prev) => (prev > 1 ? prev - 1 : 1));
     };
 
     const handleClickPlus = () => {
-        setQuantity((prev) => prev + 1);
+        setQuantityProduct((prev) => prev + 1);
     };
 
     const handleImgProductColor = (color: string) => {
         setImgProductColor(color);
-        setQuantity(1);
+        setQuantityProduct(1);
         setSelectedSize(null);
     };
 
@@ -54,6 +63,17 @@ function DetailProduct() {
 
     const handleAddToCart = async () => {
         if (!dataDetail || !findImgProduct) {
+            return;
+        }
+        if (!userData) {
+            messageApi.error({
+                content: 'Please login',
+                duration: 4,
+                style: {
+                    fontSize: '1.4rem',
+                    fontWeight: '600',
+                },
+            });
             return;
         }
         if (!selectedSize) {
@@ -69,15 +89,24 @@ function DetailProduct() {
         }
 
         const payload = {
+            userId: userData._id,
             productId: dataDetail?._id,
             name: dataDetail?.name,
             price: dataDetail?.price,
-            quantity,
+            quantity: quantityProduct,
             color: findImgProduct?.color,
             image: findImgProduct?.img_detail,
             size: selectedSize,
         };
+
+        const payloadUpdateQuantity = {
+            productId: dataDetail._id,
+            color: findImgProduct.color,
+            quantity: quantityProduct,
+        };
         const result = await ItemCart.AddItemCart(payload);
+        const updateQuantity = await Product.updateQuantity(payloadUpdateQuantity);
+        setDataDetail(updateQuantity as IProductDetail);
         setTotalCart(result.totalCart);
         messageApi.success({
             content: 'Add product to cart successfully',
@@ -162,27 +191,35 @@ function DetailProduct() {
                                 <button className={cx('btn-minus')} onClick={handleClickMinus}>
                                     <MinusOutlined />
                                 </button>
-                                <span className={cx('number')}>{quantity}</span>
+                                <span className={cx('number')}>{quantityProduct}</span>
                                 <button className={cx('btn-plus')} onClick={handleClickPlus}>
                                     <PlusOutlined />
                                 </button>
                             </div>
                             <h3 className={cx('label')}>
-                                {findImgProduct?.quantity} products available
+                                {findImgProduct?.quantity === 0
+                                    ? 'Sold out'
+                                    : `${findImgProduct?.quantity} products available`}
                             </h3>
                         </div>
 
                         <div className={cx('add-shopping-cart')}>
-                            <Button
-                                danger
-                                type="primary"
-                                block
-                                className={cx('btn')}
-                                onClick={handleAddToCart}
-                            >
-                                Add in shopping cart
-                                <ShoppingOutlined />
-                            </Button>
+                            {findImgProduct?.quantity === 0 ? (
+                                <Button disabled type="primary" block className={cx('btn')}>
+                                    Sold out
+                                </Button>
+                            ) : (
+                                <Button
+                                    danger
+                                    type="primary"
+                                    block
+                                    className={cx('btn')}
+                                    onClick={handleAddToCart}
+                                >
+                                    Add in shopping cart
+                                    <ShoppingOutlined />
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </Col>

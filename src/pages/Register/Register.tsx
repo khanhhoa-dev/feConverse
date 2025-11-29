@@ -1,8 +1,11 @@
 import classNames from 'classnames/bind';
-import { Form, Input, Row, Col, Select, Button } from 'antd';
+import { Form, Input, Row, Col, Select, Button, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { fetchRegister } from '../../stores/Slices/authSlice';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 import styles from './Register.module.scss';
 
 export interface IRegister {
@@ -17,10 +20,19 @@ export interface IRegister {
 const cx = classNames.bind(styles);
 function Register() {
     const [form] = useForm();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
 
     const onFinish = useCallback(
         (values: IRegister) => {
-            console.log(values);
+            dispatch(fetchRegister(values));
+            form.resetFields();
+            messageApi.success({
+                content: 'Register Successfully!',
+                style: { fontSize: 14, fontWeight: 600 },
+            });
+            navigate('/');
         },
         [form]
     );
@@ -53,10 +65,11 @@ function Register() {
                 className={cx('form')}
             >
                 <Row>
+                    {contextHolder}
                     <Col span={24} className={cx('col')}>
                         <h1 className={cx('title-register')}>Register</h1>
                         <Form.Item
-                            label="First name"
+                            label="First name:"
                             name="firstname"
                             rules={[{ required: true, message: 'Please enter your firstname!' }]}
                             required={false}
@@ -64,7 +77,7 @@ function Register() {
                             <Input placeholder="Enter fistname" className={cx('field')} />
                         </Form.Item>
                         <Form.Item
-                            label="Last name"
+                            label="Last name:"
                             name="lastname"
                             rules={[{ required: true, message: 'Please enter your lastname!' }]}
                             required={false}
@@ -72,7 +85,7 @@ function Register() {
                             <Input placeholder="Enter lastname" className={cx('field')} />
                         </Form.Item>
                         <Form.Item
-                            label="Username"
+                            label="Username:"
                             name="username"
                             rules={[{ required: true, message: 'Please enter your username!' }]}
                             required={false}
@@ -80,7 +93,7 @@ function Register() {
                             <Input placeholder="Enter username" className={cx('field')} />
                         </Form.Item>
                         <Form.Item
-                            label="Gender"
+                            label="Gender:"
                             name="gender"
                             rules={[{ required: true, message: 'Please select gender!' }]}
                             required={false}
@@ -95,7 +108,7 @@ function Register() {
                             />
                         </Form.Item>
                         <Form.Item
-                            label="Email"
+                            label="Email:"
                             name="email"
                             rules={[
                                 { required: true, message: 'Please enter your email!' },
@@ -106,7 +119,15 @@ function Register() {
                             <Input placeholder="Enter email" className={cx('field')} />
                         </Form.Item>
                         <Form.Item
-                            label="Password"
+                            label="Phone Number:"
+                            name="phonenumber"
+                            rules={[{ required: true, message: 'Please enter your phone number!' }]}
+                            required={false}
+                        >
+                            <Input className={cx('field')} placeholder="Enter your phone number" />
+                        </Form.Item>
+                        <Form.Item
+                            label="Password:"
                             name="password"
                             rules={[{ required: true, message: 'Please enter your password!' }]}
                             required={false}
