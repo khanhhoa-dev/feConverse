@@ -59,6 +59,8 @@ httpsRequest.interceptors.request.use(async (config) => {
     return config;
 });
 
+//[Auto Respon]
+
 //[GET]
 export const get = async <T = any>(path: string, option: AxiosRequestConfig = {}) => {
     const result = await httpsRequest.get<T>(path, option);
