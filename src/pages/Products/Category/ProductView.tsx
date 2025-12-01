@@ -25,15 +25,13 @@ function ProductView({ product }: { product: 'shoes' | 'clothing' | 'accessories
             return;
         }
         setLoading(true);
-        setTimeout(() => {
-            const fetchApi = async () => {
-                const result = await Products.products(product, gender, type, style, page);
-                setProducts(result);
-                setLoading(false);
-            };
+        const fetchApi = async () => {
+            const result = await Products.products(product, gender, type, style, page);
+            setProducts(result);
+            setLoading(false);
+        };
 
-            fetchApi();
-        }, 500);
+        fetchApi();
     }, [product, gender, type, style, page]);
 
     const handleChangePage = (pageTotal: number) => {

@@ -1,4 +1,4 @@
-import { Table, Modal, message } from 'antd';
+import { Table, Modal, message, Spin } from 'antd';
 import classNames from 'classnames/bind';
 import { DoubleLeftOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import type { TableColumnsType } from 'antd';
@@ -16,6 +16,7 @@ const cx = classNames.bind(styles);
 function ManageProducts() {
     const [dataProduct, setDataProduct] = useState<IProductDetail[]>([]);
     const [openModel, setOpenModel] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
     const userData = useLoginSelector();
@@ -25,7 +26,9 @@ function ManageProducts() {
         const fetchAllProduct = async () => {
             const token = userData?.accessToken as string;
             try {
+                setLoading(true);
                 const data = await allProducts(token);
+                setLoading(false);
                 setDataProduct(data || []);
             } catch (error) {
                 console.log('Error:', error);
@@ -251,6 +254,7 @@ function ManageProducts() {
                         );
                     }}
                 />
+                <Spin spinning={loading} fullscreen></Spin>;
             </div>
             <Modal
                 title="Are you sure you want to delete this product?"

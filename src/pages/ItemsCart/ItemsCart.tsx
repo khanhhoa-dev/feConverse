@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { DoubleLeftOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Table, Popconfirm, message, Button } from 'antd';
+import { Table, Popconfirm, message, Button, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import type { ColumnsType } from 'antd/es/table';
@@ -34,6 +34,7 @@ function ItemsCart() {
     const userData = useLoginSelector();
     const [messageApi, contextHolder] = message.useMessage();
     const { setCheckOutItems, setTotalCart } = useCartItem();
+    const [loading, setLoading] = useState<boolean>(false);
     const [dataSource, setDataSource] = useState<IItemCart[] | null>(null);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
@@ -115,7 +116,9 @@ function ItemsCart() {
     useEffect(() => {
         const fetchApiItem = async () => {
             try {
+                setLoading(true);
                 const data = await ItemCart.GetItemCart(userData?.accessToken!);
+                setLoading(false);
                 setDataSource(data.dataCart);
             } catch (error) {
                 console.log('Error:', error);
@@ -203,6 +206,7 @@ function ItemsCart() {
                         );
                     }}
                 />
+                <Spin spinning={loading} fullscreen></Spin>
             </div>
         </div>
     );

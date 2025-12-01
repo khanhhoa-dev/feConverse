@@ -1,5 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import axios, { type AxiosRequestConfig } from 'axios';
+// import { persistor } from '../stores/store';
 
 import { store } from '../stores/store';
 import type { RootState } from '../stores/store';
@@ -48,6 +49,7 @@ httpsRequest.interceptors.request.use(async (config) => {
             const refreshData = await refreshAccessToken();
             store.dispatch(updateAccessToken({ accessToken: refreshData.accessToken }));
             tokenRefresh = refreshData.accessToken;
+            // await persistor.flush();
         } catch (error) {
             console.error('Refresh failed:', error);
         }
@@ -59,7 +61,30 @@ httpsRequest.interceptors.request.use(async (config) => {
     return config;
 });
 
-//[Auto Respon]
+//[Interceptor response]
+httpsRequest.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if (
+            (error.response?.status === 401 || error.response?.status === 403) &&
+            !originalRequest._retry
+        ) {
+            originalRequest._retry = true;
+            try {
+                const refreshData = await refreshAccessToken();
+                store.dispatch(updateAccessToken({ accessToken: refreshData.accessToken }));
+                // await persistor.flush();
+                originalRequest.headers.token = `Bearer ${refreshData.accessToken}`;
+                return httpsRequest(originalRequest);
+            } catch (refreshError) {
+                return Promise.reject(refreshError);
+            }
+        } else {
+            return Promise.reject(error);
+        }
+    }
+);
 
 //[GET]
 export const get = async <T = any>(path: string, option: AxiosRequestConfig = {}) => {

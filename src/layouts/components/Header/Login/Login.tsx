@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps, message } from 'antd';
+import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps, message, Spin } from 'antd';
 import styles from './Login.module.scss';
 
 import { type MenuItem, CustomerMenuKey, CUSTOMER_MENU } from '../../../../data/customerMenu';
@@ -21,6 +21,7 @@ export interface ILogin {
 function Login() {
     const navigate = useNavigate();
     const userData = useLoginSelector();
+    const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const [form] = Form.useForm<ILogin>();
     const [messageApi, contextHolder] = message.useMessage();
@@ -29,7 +30,9 @@ function Login() {
     const onFinish = useCallback(
         async (values: ILogin) => {
             try {
+                setLoading(true);
                 await dispatch(fetchLogin(values)).unwrap();
+                setLoading(false);
                 form.resetFields();
                 messageApi.success({
                     content: 'Login Successfully!',
@@ -224,6 +227,7 @@ function Login() {
                         </Link>
                     </Form.Item>
                 </Form>
+                <Spin fullscreen spinning={loading}></Spin>
             </Modal>
         </>
     );
