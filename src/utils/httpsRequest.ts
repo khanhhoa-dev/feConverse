@@ -103,9 +103,9 @@ export const post = async <T = any, D = any>(
 };
 
 //[PATCH]
-export const patch = async <T = any>(
+export const patch = async <T = any, D = any>(
     path: string,
-    data?: IProductDetail,
+    data?: D,
     option: AxiosRequestConfig = {}
 ) => {
     const result = await httpsRequest.patch<T>(path, data, option);

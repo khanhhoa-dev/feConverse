@@ -42,6 +42,7 @@ function Login() {
                     },
                 });
                 setIsLoginVisible(false);
+                navigate('/');
             } catch (error) {
                 const err = error as ILoginError;
                 form.setFields([
@@ -50,6 +51,7 @@ function Login() {
                         errors: [err.message],
                     },
                 ]);
+                setLoading(false);
             }
         },
         [form]

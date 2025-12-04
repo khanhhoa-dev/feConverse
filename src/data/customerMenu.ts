@@ -2,6 +2,7 @@
 export enum CustomerMenuKey {
     MyAccount = 'my-account',
     ManageProducts = 'manage-products',
+    ManageUsers = 'manage-users',
     Logout = 'logout',
 }
 
@@ -23,6 +24,12 @@ export const CUSTOMER_MENU: Record<CustomerMenuKey, MenuItem> = {
         key: CustomerMenuKey.ManageProducts,
         label: 'Manage-Products',
         route: '/manage-products',
+        requiredRole: ['admin'],
+    },
+    [CustomerMenuKey.ManageUsers]: {
+        key: CustomerMenuKey.ManageUsers,
+        label: 'Manage-Users',
+        route: '/manage-users',
         requiredRole: ['admin'],
     },
     [CustomerMenuKey.Logout]: {

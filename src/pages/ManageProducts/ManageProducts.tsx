@@ -52,13 +52,15 @@ function ManageProducts() {
     const handleOkDelete = async () => {
         if (!deleteId) return;
         try {
+            setLoading(true);
             await deleteSoftProduct(deleteId);
+            setOpenModel(false);
+            setLoading(false);
             messageApi.success({
                 content: 'Delete product successfully!',
                 style: { fontSize: 14, fontWeight: 600 },
             });
             setDataProduct((prev) => prev.filter((item) => item._id !== deleteId));
-            setOpenModel(false);
             setDeleteId(null);
         } catch (error) {
             console.log('Delete error:', error);

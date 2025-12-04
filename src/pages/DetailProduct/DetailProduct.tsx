@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col, Button, Select, message } from 'antd';
+import { Row, Col, Button, Select, message, Spin } from 'antd';
 import { ShoppingOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
 import styles from './DetailProduct.module.scss';
@@ -29,6 +29,7 @@ function DetailProduct() {
     const [dataDetail, setDataDetail] = useState<IProductDetail | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [messageApi, contextHolder] = message.useMessage();
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (!slug) {
@@ -104,10 +105,15 @@ function DetailProduct() {
             color: findImgProduct.color,
             quantity: quantityProduct,
         };
+
+        //Add to cart
+        setLoading(true);
         const result = await ItemCart.AddItemCart(payload);
+        //Update Product Quantity
         const updateQuantity = await Product.updateQuantity(payloadUpdateQuantity);
         setDataDetail(updateQuantity as IProductDetail);
         setTotalCart(result.totalCart);
+        setLoading(false);
         messageApi.success({
             content: 'Add product to cart successfully',
             duration: 4,
@@ -227,6 +233,7 @@ function DetailProduct() {
             <div className={cx('recommended-products')}>
                 <FeaturedProduct typeProduct={dataDetail?.product} title="Recommended Products" />
             </div>
+            <Spin fullscreen spinning={loading}></Spin>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { Button, Modal, message } from 'antd';
+import { Button, Modal, message, Spin } from 'antd';
 import { DoubleLeftOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -19,6 +19,7 @@ interface DataSelectField {
 function DeletedProducts() {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [messageApi, contextHolder] = message.useMessage();
+    const [loading, setLoading] = useState<boolean>(false);
     const [dataProduct, setDataProduct] = useState<DataSelectField[] | null>(null);
 
     useEffect(() => {
@@ -50,8 +51,10 @@ function DeletedProducts() {
     };
     const handleOkDeleteHard = async (id: string) => {
         try {
+            setLoading(true);
             await DeletedProduct.deleteHard(id);
             setOpenModal(false);
+            setLoading(false);
             messageApi.success({
                 content: 'Product deleted successfully!',
                 duration: 3,
@@ -148,6 +151,7 @@ function DeletedProducts() {
                     </div>
                 )}
             </div>
+            <Spin spinning={loading} fullscreen></Spin>
         </div>
     );
 }
