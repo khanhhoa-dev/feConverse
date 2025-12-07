@@ -4,7 +4,6 @@ import axios, { type AxiosRequestConfig } from 'axios';
 
 import { store } from '../stores/store';
 import type { RootState } from '../stores/store';
-import type { IProductDetail } from '../ts/index';
 import { updateAccessToken } from '../stores/Slices/authSlice';
 
 interface RefreshResponse {

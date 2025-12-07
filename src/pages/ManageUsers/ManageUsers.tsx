@@ -108,21 +108,18 @@ function ManagerUsers() {
             dataIndex: 'admin',
             width: 120,
             align: 'center',
-            render: (admin: boolean, record) =>
-                admin ? (
-                    'Admin'
-                ) : (
-                    <Select
-                        defaultValue={admin}
-                        bordered={false}
-                        style={{ width: 110 }}
-                        options={[
-                            { label: 'Admin', value: true },
-                            { label: 'User', value: false },
-                        ]}
-                        onChange={(value) => handleUpdateRole(record._id, value)}
-                    />
-                ),
+            render: (admin: boolean, record) => (
+                <Select
+                    defaultValue={admin}
+                    bordered={false}
+                    style={{ width: 110 }}
+                    options={[
+                        { label: 'Admin', value: true },
+                        { label: 'User', value: false },
+                    ]}
+                    onChange={(value) => handleUpdateRole(record._id, value)}
+                />
+            ),
         },
         {
             title: 'Gender',

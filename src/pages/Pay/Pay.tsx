@@ -57,8 +57,21 @@ function Pay() {
             return sum + numericPrice * item.quantity;
         }, 0) || 0;
 
+    const infoProduct = checkOutItems.map((item) => {
+        return {
+            ...item,
+            price: Number(item.price.replace(/,/g, '')),
+        };
+    });
+
     const onFinish = (values: IInformationOrder) => {
-        console.log('Checkout data:', values, checkOutItems, OrderTotal.toLocaleString());
+        const checkoutData = {
+            ...values,
+            items: infoProduct,
+            total: OrderTotal,
+        };
+        console.log(checkoutData);
+
         if (values.paymentMethod === 'online') {
             setIsModalVisible(true);
             return;
@@ -104,7 +117,7 @@ function Pay() {
                                 className={cx('cart')}
                             >
                                 <Form.Item
-                                    name="fullName"
+                                    name="fullname"
                                     label="Full Name"
                                     rules={[
                                         { required: true, message: 'Please input your full name!' },
@@ -186,7 +199,7 @@ function Pay() {
                                     required={false}
                                 >
                                     <Radio.Group>
-                                        <Radio value="online">Payment online (VNPay/MoMo)</Radio>
+                                        <Radio value="payos">Payment online (VNPay/MoMo)</Radio>
                                         <Radio value="cod">Cash on delivery (COD)</Radio>
                                     </Radio.Group>
                                 </Form.Item>

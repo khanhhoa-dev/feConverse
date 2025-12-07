@@ -209,24 +209,26 @@ function DetailProduct() {
                             </h3>
                         </div>
 
-                        <div className={cx('add-shopping-cart')}>
-                            {findImgProduct?.quantity === 0 ? (
-                                <Button disabled type="primary" block className={cx('btn')}>
-                                    Sold out
-                                </Button>
-                            ) : (
-                                <Button
-                                    danger
-                                    type="primary"
-                                    block
-                                    className={cx('btn')}
-                                    onClick={handleAddToCart}
-                                >
-                                    Add in shopping cart
-                                    <ShoppingOutlined />
-                                </Button>
-                            )}
-                        </div>
+                        {userData?.admin === false && (
+                            <div className={cx('add-shopping-cart')}>
+                                {findImgProduct?.quantity === 0 ? (
+                                    <Button disabled type="primary" block className={cx('btn')}>
+                                        Sold out
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        danger
+                                        type="primary"
+                                        block
+                                        className={cx('btn')}
+                                        onClick={handleAddToCart}
+                                    >
+                                        Add in shopping cart
+                                        <ShoppingOutlined />
+                                    </Button>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </Col>
             </Row>

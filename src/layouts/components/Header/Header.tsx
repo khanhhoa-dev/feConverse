@@ -76,7 +76,7 @@ function Header({ isToggle }: HeaderProps): JSX.Element {
                     </div>
                     <div className={cx('login-search')}>
                         <Search />
-                        {userData && (
+                        {userData && userData.admin === false && (
                             <div className={cx('items-cart')}>
                                 <Link to="/items-cart">
                                     <Badge
