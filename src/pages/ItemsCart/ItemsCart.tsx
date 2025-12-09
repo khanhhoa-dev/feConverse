@@ -1,17 +1,13 @@
-import classNames from 'classnames/bind';
-import { DoubleLeftOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Table, Popconfirm, message, Button, Spin } from 'antd';
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { ColumnsType } from 'antd/es/table';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Popconfirm, message, Button, Spin } from 'antd';
 
-import styles from './ItemsCart.module.scss';
-import { Link } from 'react-router-dom';
 import * as ItemCart from '../../services/itemCart';
 import { useCartItem } from '../../contexts/CartContext';
 import { useLoginSelector } from '../../hooks/useAppSelector';
-
-const cx = classNames.bind(styles);
+import TableCustom, { cx as tableCustomCx } from '../../components/Table/TableCustom';
 
 export interface IItemCart {
     _id: string;
@@ -35,7 +31,7 @@ function ItemsCart() {
     const [messageApi, contextHolder] = message.useMessage();
     const { setCheckOutItems, setTotalCart } = useCartItem();
     const [loading, setLoading] = useState<boolean>(false);
-    const [dataSource, setDataSource] = useState<IItemCart[] | null>(null);
+    const [dataSource, setDataSource] = useState<IItemCart[]>([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
     const columns: ColumnsType<IItemCart> = [
@@ -49,9 +45,6 @@ function ItemsCart() {
                     src={image}
                     alt="Image Product"
                     style={{ width: 70, height: 70, objectFit: 'contain', borderRadius: 4 }}
-                    onError={(e) => {
-                        (e.target as HTMLImageElement).src = '/placeholder.jpg';
-                    }}
                 />
             ),
             align: 'center',
@@ -96,7 +89,6 @@ function ItemsCart() {
                 <Popconfirm
                     title="Are you sure you want to delete this product?"
                     onConfirm={() => handleDeleteItemCart(record._id)}
-                    className={cx('btn')}
                     okText="Yes"
                     cancelText="No"
                     okButtonProps={{
@@ -161,54 +153,50 @@ function ItemsCart() {
         navigate('/pay');
     };
 
-    return (
-        <div className={cx('wrapper')}>
-            {contextHolder}
-            <div className={cx('title')}>
-                <Link to="/">
-                    <DoubleLeftOutlined className={cx('icon')} />
-                </Link>
-                <h1 className={cx('title-text')}>Item cart</h1>
-            </div>
-            <div className={cx('container')}>
-                <Table
-                    className={cx('table')}
-                    bordered={true}
-                    rowSelection={rowSelection}
-                    dataSource={dataSource || []}
-                    columns={columns}
-                    pagination={false}
-                    rowKey="_id"
-                    footer={() => {
-                        //Lọc sản phẩm đã chọn
-                        const selectedItems =
-                            dataSource?.filter((item) => selectedRowKeys.includes(item._id)) || [];
-                        const totalPrice =
-                            selectedItems?.reduce((sum, item) => {
-                                const numericPrice = Number(item.price.replace(/,/g, ''));
-                                return sum + numericPrice * item.quantity;
-                            }, 0) || 0;
+    const footer = () => {
+        //Lọc sản phẩm đã chọn
+        const selectedItems =
+            dataSource?.filter((item) => selectedRowKeys.includes(item._id)) || [];
+        const totalPrice =
+            selectedItems?.reduce((sum, item) => {
+                const numericPrice = Number(item.price.replace(/,/g, ''));
+                return sum + numericPrice * item.quantity;
+            }, 0) || 0;
 
-                        return (
-                            <div className={cx('footer-table')}>
-                                <span className={cx('total')}>
-                                    Total items: {selectedRowKeys.length}
-                                </span>
-                                <span className={cx('total')}>
-                                    Total price: {totalPrice.toLocaleString('vi-VN')} VNĐ
-                                </span>
-                                <div className={cx('check-out')}>
-                                    <Button danger type="primary" onClick={() => handleCheckOut()}>
-                                        Check out
-                                    </Button>
-                                </div>
-                            </div>
-                        );
-                    }}
-                />
-                <Spin spinning={loading} fullscreen></Spin>
+        return (
+            <div className={tableCustomCx('footer-cart')}>
+                <span className={tableCustomCx('total')}>
+                    Total items: {selectedRowKeys.length}
+                </span>
+                <span className={tableCustomCx('total')}>
+                    Total price: {totalPrice.toLocaleString('vi-VN')} VNĐ
+                </span>
+                <div className={tableCustomCx('check-out')}>
+                    <Button danger type="primary" onClick={() => handleCheckOut()}>
+                        Check out
+                    </Button>
+                </div>
             </div>
-        </div>
+        );
+    };
+
+    const pageConfig = {
+        title: 'Items cart',
+        backTo: '/',
+    };
+
+    return (
+        <>
+            <TableCustom
+                columns={columns}
+                data={dataSource}
+                contextHolder={contextHolder}
+                footerToggle={footer}
+                rowSelection={rowSelection}
+                pageConfig={pageConfig}
+            />
+            <Spin spinning={loading} fullscreen></Spin>;
+        </>
     );
 }
 

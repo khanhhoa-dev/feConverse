@@ -44,6 +44,7 @@ export interface IProductResponsive {
     products: DataSelectField[];
 }
 
+//Data Users
 export interface IAuthUser {
     _id: string;
     firstname: string;
@@ -53,4 +54,44 @@ export interface IAuthUser {
     admin: boolean;
     gender: string;
     accessToken: string;
+}
+
+//Data Checkout
+export interface ICheckOutItem {
+    _id: string;
+    productId: string;
+    userId: string;
+    name: string;
+    image: string;
+    color: string;
+    size: string;
+    price: number;
+    quantity: number;
+}
+
+export interface IDataPayment {
+    fullname: string;
+    email: string;
+    phone: string;
+    address: string;
+    paymentMethod: string;
+    shippingMethod: string;
+    total: number;
+    items: ICheckOutItem[];
+}
+
+//OrderDetail
+export interface IOrderDetail {
+    fullname: string;
+    email: string;
+    phone: string;
+    address: string;
+    paymentMethod: string;
+    shippingMethod: string;
+    total: number;
+    items: ICheckOutItem[];
+    orderStatus: string;
+    orderId: string;
+    orderCode: number;
+    paymentLink: string;
 }

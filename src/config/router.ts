@@ -6,6 +6,7 @@ const router = {
     add_product: '/add/product',
     register: '/account/register',
     manage_users: '/manage-users',
+    order_detail: '/order-detail',
     products: '/products/:product',
     store_locator: '/store-locator',
     update_product: '/update/:slug',

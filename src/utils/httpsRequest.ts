@@ -1,6 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
 import axios, { type AxiosRequestConfig } from 'axios';
-// import { persistor } from '../stores/store';
 
 import { store } from '../stores/store';
 import type { RootState } from '../stores/store';
@@ -48,7 +47,6 @@ httpsRequest.interceptors.request.use(async (config) => {
             const refreshData = await refreshAccessToken();
             store.dispatch(updateAccessToken({ accessToken: refreshData.accessToken }));
             tokenRefresh = refreshData.accessToken;
-            // await persistor.flush();
         } catch (error) {
             console.error('Refresh failed:', error);
         }
@@ -73,7 +71,6 @@ httpsRequest.interceptors.response.use(
             try {
                 const refreshData = await refreshAccessToken();
                 store.dispatch(updateAccessToken({ accessToken: refreshData.accessToken }));
-                // await persistor.flush();
                 originalRequest.headers.token = `Bearer ${refreshData.accessToken}`;
                 return httpsRequest(originalRequest);
             } catch (refreshError) {

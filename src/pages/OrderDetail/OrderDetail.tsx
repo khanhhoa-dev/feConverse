@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { TableColumnsType } from 'antd';
-import { Spin, Modal, message, Tag, Popconfirm, Button, Rate, Typography } from 'antd';
+import { Spin, Modal, message, Tag, Button, Rate, Typography } from 'antd';
 
 import type { IOrderDetail } from '../../ts';
 import * as OrderInfo from '../../services/orderDetail';
@@ -12,7 +12,9 @@ function OrderDetail() {
     const userData = useLoginSelector();
     const [loading, setLoading] = useState<boolean>(false);
     const [messageApi, contextHolder] = message.useMessage();
+    const [productCancel, setProductCancel] = useState<boolean>(false);
     const [userOrderInfo, setUserOrderInfo] = useState<IOrderDetail[]>([]);
+    const [statusModelReview, setStatusModelReview] = useState<boolean>(false);
 
     const accessToken = userData?.accessToken as string;
     const userId = userData?._id as string;
@@ -30,6 +32,9 @@ function OrderDetail() {
         };
         fetchUserOrderInfo();
     }, []);
+
+    const handleSubmitReview = () => {};
+    const handleSubmitCancel = () => {};
 
     const columns: TableColumnsType<IOrderDetail> = [
         {
@@ -101,9 +106,9 @@ function OrderDetail() {
                 } else if (status === 'pending') {
                     color = 'yellow';
                     text = 'Waiting for confirmation';
-                } else if (status === 'transport') {
+                } else if (status === 'shipping') {
                     color = 'blue';
-                    text = 'Transported';
+                    text = 'Shipping';
                 }
                 return <Tag color={color}>{text.toUpperCase()}</Tag>;
             },
@@ -129,19 +134,31 @@ function OrderDetail() {
                                 type="primary"
                                 size="small"
                                 style={{ width: 90, height: 30 }}
+                                onClick={() => setStatusModelReview(true)}
                             >
                                 Reviews
                             </Button>
 
                             <Modal
                                 title="Product reviews"
-                                open={false}
-                                // onOk={handleSubmitReview}
-                                // onCancel={() => setOpenRate(false)}
+                                open={statusModelReview}
+                                onOk={handleSubmitReview}
+                                onCancel={() => setStatusModelReview(false)}
                                 okText="Submit a review"
                                 cancelText="Cancel"
-                                confirmLoading={loading}
-                                // okButtonProps={{ disabled: rating === 0 }}
+                                okButtonProps={{
+                                    danger: true,
+                                }}
+                                cancelButtonProps={{
+                                    style: {
+                                        backgroundColor: '#000',
+                                        color: '#fff',
+                                        borderColor: '#000',
+                                    },
+                                }}
+                                maskStyle={{
+                                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                }}
                             >
                                 <div style={{ textAlign: 'center', padding: '20px 0' }}>
                                     <Text
@@ -175,23 +192,47 @@ function OrderDetail() {
                     );
                 } else if (record.orderStatus === 'pending') {
                     return (
-                        <Popconfirm
-                            title="Are you sure you want to cancel this order?"
-                            okText="Yes, cancel order"
-                            cancelText="No"
-                            okButtonProps={{ danger: true }}
-                        >
+                        <>
                             <Button
                                 danger
                                 type="primary"
                                 size="small"
                                 style={{ width: 90, height: 30 }}
+                                onClick={() => setProductCancel(true)}
                             >
                                 Cancel order
                             </Button>
-                        </Popconfirm>
+                            <Modal
+                                title="Product cancel"
+                                open={productCancel}
+                                onOk={handleSubmitCancel}
+                                onCancel={() => setProductCancel(false)}
+                                okText="Confirm"
+                                cancelText="Cancel"
+                                okButtonProps={{
+                                    danger: true,
+                                }}
+                                cancelButtonProps={{
+                                    style: {
+                                        backgroundColor: '#000',
+                                        color: '#fff',
+                                        borderColor: '#000',
+                                    },
+                                }}
+                                maskStyle={{
+                                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                }}
+                            >
+                                <Text
+                                    strong
+                                    style={{ fontSize: 16, display: 'block', marginBottom: 16 }}
+                                >
+                                    Do you want to cancel your order?
+                                </Text>
+                            </Modal>
+                        </>
                     );
-                } else if (record.orderStatus === 'transport') {
+                } else if (record.orderStatus === 'shipping') {
                     return (
                         <Button type="primary" disabled style={{ width: 90, height: 30 }}>
                             Cancel order
@@ -205,6 +246,14 @@ function OrderDetail() {
     const pageConfig = {
         title: 'Order detail',
         backTo: '/',
+        toggleButton: {
+            label: 'Reviewed ',
+            to: '/order/reviewed',
+        },
+        trashButton: {
+            label: 'Canceled',
+            to: '/order/canceled',
+        },
     };
 
     return (

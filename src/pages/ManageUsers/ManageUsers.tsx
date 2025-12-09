@@ -1,13 +1,10 @@
-import { Link } from 'react-router-dom';
-import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import type { TableColumnsType } from 'antd';
-// import { useNavigate } from 'react-router-dom';
-import { Table, Spin, Select, Modal, message } from 'antd';
-import { DoubleLeftOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Spin, Select, Modal, message } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 import * as Users from '../../services/users';
-import styles from './ManageUsers.module.scss';
+import TableCustom from '../../components/Table/TableCustom';
 import { useLoginSelector } from '../../hooks/useAppSelector';
 
 export interface IInformUser {
@@ -19,15 +16,14 @@ export interface IInformUser {
     admin: boolean;
     createdAt: Date;
 }
-const cx = classNames.bind(styles);
+
 function ManagerUsers() {
-    // const navigate = useNavigate();
     const userData = useLoginSelector();
     const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState<boolean>(false);
     const [openModel, setOpenModel] = useState<boolean>(false);
     const [idDeleteUser, setIdDeleteUser] = useState<string>('');
-    const [usersData, setUsersData] = useState<IInformUser[] | null>(null);
+    const [usersData, setUsersData] = useState<IInformUser[]>([]);
 
     useEffect(() => {
         const accessToken = userData?.accessToken;
@@ -79,7 +75,7 @@ function ManagerUsers() {
 
     const columns: TableColumnsType<IInformUser> = [
         {
-            title: '*',
+            title: 'STT',
             dataIndex: 'index',
             width: 40,
             align: 'center',
@@ -165,51 +161,38 @@ function ManagerUsers() {
         },
     ];
 
+    const pageConfig = {
+        title: 'Manager user',
+        backTo: '/',
+    };
+
     return (
-        <div className={cx('wrapper')}>
-            {contextHolder}
-            <div className={cx('title')}>
-                <Link to="/">
-                    <DoubleLeftOutlined className={cx('icon')} />
-                </Link>
-                <h1 className={cx('title-text')}>Manager user</h1>
-            </div>
-            <div className={cx('container')}>
-                <Table
-                    className={cx('table')}
-                    bordered
-                    columns={columns}
-                    pagination={false}
-                    dataSource={usersData!}
-                    rowKey="_id"
-                    footer={() => {
-                        return (
-                            <div className={cx('footer')}>
-                                <span>Total users: {usersData?.length}</span>
-                            </div>
-                        );
-                    }}
-                />
-                <Spin spinning={loading} fullscreen></Spin>
-                <Modal
-                    title="Are you sure you want to delete this user?"
-                    open={openModel}
-                    onOk={handleOkDelete}
-                    onCancel={handleCancelDelete}
-                    okText="Yes, Delete it"
-                    cancelText="No, Keep it"
-                    okButtonProps={{ danger: true }}
-                    cancelButtonProps={{
-                        style: {
-                            color: 'var(--black-color)',
-                            borderColor: 'var(--border-color)',
-                        },
-                    }}
-                >
-                    <p>This action can be undone by restoring the user later.</p>
-                </Modal>
-            </div>
-        </div>
+        <>
+            <TableCustom
+                columns={columns}
+                data={usersData}
+                contextHolder={contextHolder}
+                pageConfig={pageConfig}
+            />
+            <Spin spinning={loading} fullscreen></Spin>
+            <Modal
+                title="Are you sure you want to delete this user?"
+                open={openModel}
+                onOk={handleOkDelete}
+                onCancel={handleCancelDelete}
+                okText="Yes, Delete it"
+                cancelText="No, Keep it"
+                okButtonProps={{ danger: true }}
+                cancelButtonProps={{
+                    style: {
+                        color: 'var(--black-color)',
+                        borderColor: 'var(--border-color)',
+                    },
+                }}
+            >
+                <p>This action can be undone by restoring the user later.</p>
+            </Modal>
+        </>
     );
 }
 
