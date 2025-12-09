@@ -9,12 +9,13 @@ import Register from '../pages/Register/Register';
 import ItemsCart from '../pages/ItemsCart/ItemsCart';
 import AddProduct from '../pages/AddProduct/AddProduct';
 import OnlyHeader from '../layouts/OnlyHeader/OnlyHeader';
+import OrderDetail from '../pages/OrderDetail/OrderDetail';
 import ManagerUsers from '../pages/ManageUsers/ManageUsers';
 import StoreLocator from '../pages/StoreLocator/StoreLocator';
 import UpdateProduct from '../pages/UpdateProduct/UpdateProduct';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
-import ManageProducts from '../pages/ManageProducts/ManageProducts';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
+import ManageProducts from '../pages/ManageProducts/ManageProducts';
 import DeletedProducts from '../pages/DeletedProducts/DeletedProducts';
 import type { LayoutProps } from '../ts';
 
@@ -36,6 +37,7 @@ export const publicRoute: Route[] = [
     { path: config.router.store_locator, component: StoreLocator },
     { path: config.router.pay, component: Pay, layout: OnlyHeader },
     { path: config.router.detail_product, component: DetailProduct },
+    { path: config.router.order_detail, component: OrderDetail },
     { path: config.router.add_product, component: AddProduct, layout: OnlyHeader },
     { path: config.router.manage_users, component: ManagerUsers, layout: OnlyHeader },
     { path: config.router.update_product, component: UpdateProduct, layout: OnlyHeader },

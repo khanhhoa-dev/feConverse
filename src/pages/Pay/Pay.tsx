@@ -1,4 +1,6 @@
 import classNames from 'classnames/bind';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Row,
     Col,
@@ -12,15 +14,17 @@ import {
     Divider,
     Modal,
     message,
+    Spin,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { DoubleLeftOutlined } from '@ant-design/icons';
 
-import { useCartItem } from '../../contexts/CartContext';
 import styles from './Pay.module.scss';
+import type { IDataPayment } from '../../ts';
 import type { IItemCart } from '../ItemsCart/ItemsCart';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useCartItem } from '../../contexts/CartContext';
+import * as ProductCheckOut from '../../services/checkout';
+import { useLoginSelector } from '../../hooks/useAppSelector';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -36,11 +40,13 @@ export interface IInformationOrder {
 }
 
 function Pay() {
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const userData = useLoginSelector();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [messageApi, contextHolder] = message.useMessage();
     const { checkOutItems, setCheckOutItems } = useCartItem();
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-    const navigate = useNavigate();
-    const [messageApi, contextHolder] = message.useMessage();
-    const [form] = Form.useForm();
 
     useEffect(() => {
         const getCheckoutProduct = localStorage.getItem('checkoutProduct');
@@ -64,23 +70,39 @@ function Pay() {
         };
     });
 
-    const onFinish = (values: IInformationOrder) => {
-        const checkoutData = {
-            ...values,
-            items: infoProduct,
-            total: OrderTotal,
-        };
-        console.log(checkoutData);
+    const accessToken = userData?.accessToken as string;
 
-        if (values.paymentMethod === 'online') {
-            setIsModalVisible(true);
-            return;
+    const onFinish = async (values: IInformationOrder) => {
+        setLoading(true);
+        try {
+            const checkoutData: IDataPayment = {
+                ...values,
+                items: infoProduct,
+                total: OrderTotal,
+            };
+
+            const linkPayos = await ProductCheckOut.checkout(accessToken, checkoutData);
+
+            if (values.paymentMethod === 'payos') {
+                window.location.href = linkPayos;
+                return;
+            }
+
+            if (values.paymentMethod === 'cod') {
+                setIsModalVisible(true);
+                return;
+            }
+
+            messageApi.success({
+                content: 'Order successfully!',
+                style: { fontSize: 14, fontWeight: 600 },
+            });
+        } catch (err) {
+            console.error(err);
+            messageApi.error('Checkout failed');
+        } finally {
+            setLoading(false);
         }
-        messageApi.success({
-            content: 'Order successfully!',
-            style: { fontSize: 14, fontWeight: 600 },
-        });
-        navigate('/items-cart');
     };
 
     const handleOkModal = () => {
@@ -278,6 +300,7 @@ function Pay() {
                     </div>
                 </Modal>
             </div>
+            <Spin fullscreen spinning={loading}></Spin>
         </div>
     );
 }

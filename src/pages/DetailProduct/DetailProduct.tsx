@@ -4,14 +4,14 @@ import { useParams } from 'react-router-dom';
 import { Row, Col, Button, Select, message, Spin } from 'antd';
 import { ShoppingOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
+import type { IProductDetail } from '../../ts';
 import styles from './DetailProduct.module.scss';
+import * as Product from '../../services/products';
+import * as ItemCart from '../../services/itemCart';
+import { useCartItem } from '../../contexts/CartContext';
+import { useLoginSelector } from '../../hooks/useAppSelector';
 import * as GetDetailProduct from '../../services/detailProduct';
 import FeaturedProduct from '../../components/FeaturedProduct/FeaturedProduct';
-import type { IProductDetail } from '../../ts';
-import { useCartItem } from '../../contexts/CartContext';
-import * as ItemCart from '../../services/itemCart';
-import { useLoginSelector } from '../../hooks/useAppSelector';
-import * as Product from '../../services/products';
 
 const cx = classNames.bind(styles);
 export interface IUpdateProduct {
@@ -22,14 +22,14 @@ export interface IUpdateProduct {
 
 function DetailProduct() {
     const { slug } = useParams();
-    const { setTotalCart } = useCartItem();
     const userData = useLoginSelector();
+    const { setTotalCart } = useCartItem();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [messageApi, contextHolder] = message.useMessage();
     const [quantityProduct, setQuantityProduct] = useState<number>(1);
     const [imgProductColor, setImgProductColor] = useState<string>('');
-    const [dataDetail, setDataDetail] = useState<IProductDetail | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
-    const [messageApi, contextHolder] = message.useMessage();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [dataDetail, setDataDetail] = useState<IProductDetail | null>(null);
 
     useEffect(() => {
         if (!slug) {

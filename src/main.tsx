@@ -5,15 +5,15 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import 'antd/dist/reset.css';
 import './styles/global.scss';
-import { store } from './stores/store.ts';
-// import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './stores/store.ts';
+import { PersistGate } from 'redux-persist/integration/react';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <Provider store={store}>
-            {/* <PersistGate persistor={persistor}> */}
-            <App />
-            {/* </PersistGate> */}
+            <PersistGate persistor={persistor}>
+                <App />
+            </PersistGate>
         </Provider>
     </StrictMode>
 );

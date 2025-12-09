@@ -1,26 +1,23 @@
-import { Table, Modal, message, Spin } from 'antd';
-import classNames from 'classnames/bind';
-import { DoubleLeftOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
-import type { TableColumnsType } from 'antd';
 import { useEffect, useState } from 'react';
+import type { TableColumnsType } from 'antd';
+import { Modal, message, Spin } from 'antd';
+import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 
-import styles from './ManageProducts.module.scss';
-import { Link, useNavigate } from 'react-router-dom';
 import type { IProductDetail } from '../../ts';
+import { useNavigate } from 'react-router-dom';
 import { allProducts } from '../../services/products';
-import { deleteSoftProduct } from '../../services/deleteSoftProduct';
+import TableCustom from '../../components/Table/TableCustom';
 import { useLoginSelector } from '../../hooks/useAppSelector';
-
-const cx = classNames.bind(styles);
+import { deleteSoftProduct } from '../../services/deleteSoftProduct';
 
 function ManageProducts() {
-    const [dataProduct, setDataProduct] = useState<IProductDetail[]>([]);
-    const [openModel, setOpenModel] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [deleteId, setDeleteId] = useState<string | null>(null);
-    const [messageApi, contextHolder] = message.useMessage();
-    const userData = useLoginSelector();
     const navigate = useNavigate();
+    const userData = useLoginSelector();
+    const [loading, setLoading] = useState<boolean>(false);
+    const [messageApi, contextHolder] = message.useMessage();
+    const [openModel, setOpenModel] = useState<boolean>(false);
+    const [deleteId, setDeleteId] = useState<string | null>(null);
+    const [dataProduct, setDataProduct] = useState<IProductDetail[]>([]);
 
     useEffect(() => {
         const fetchAllProduct = async () => {
@@ -219,45 +216,27 @@ function ManageProducts() {
         },
     ];
 
+    const pageConfig = {
+        title: 'Manage products',
+        backTo: '/',
+        toggleButton: {
+            label: 'Add product',
+            to: '/add/product',
+        },
+        trashButton: {
+            label: 'Trash can',
+            to: '/deleted-products',
+        },
+    };
     return (
-        <div className={cx('wrapper')}>
-            {contextHolder}
-            <div className={cx('header')}>
-                <div className={cx('title')}>
-                    <Link to={'/'}>
-                        <DoubleLeftOutlined className={cx('icon')} />
-                    </Link>
-                    <h1 className={cx('title-text')}>Manage products</h1>
-                </div>
-
-                <div className={cx('add-products')}>
-                    <Link to={'/add/product'} className={cx('btn-add')}>
-                        Add product
-                    </Link>
-                    <Link to={'/deleted-products'} className={cx('btn-trash')}>
-                        Trash can
-                    </Link>
-                </div>
-            </div>
-
-            <div className={cx('container')}>
-                <Table
-                    className={cx('table')}
-                    bordered
-                    columns={columns}
-                    pagination={false}
-                    dataSource={dataProduct}
-                    rowKey="_id"
-                    footer={() => {
-                        return (
-                            <div className={cx('footer')}>
-                                <span>Total product: {dataProduct.length}</span>
-                            </div>
-                        );
-                    }}
-                />
-                <Spin spinning={loading} fullscreen></Spin>;
-            </div>
+        <>
+            <TableCustom
+                columns={columns}
+                data={dataProduct}
+                contextHolder={contextHolder}
+                pageConfig={pageConfig}
+            />
+            <Spin spinning={loading} fullscreen></Spin>;
             <Modal
                 title="Are you sure you want to delete this product?"
                 open={openModel}
@@ -275,7 +254,7 @@ function ManageProducts() {
             >
                 <p>This action can be undone by restoring the product later.</p>
             </Modal>
-        </div>
+        </>
     );
 }
 

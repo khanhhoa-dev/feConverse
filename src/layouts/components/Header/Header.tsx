@@ -1,17 +1,17 @@
-import classNames from 'classnames/bind';
-import { Link } from 'react-router-dom';
-import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge } from 'antd';
-import { useEffect, useState, type JSX } from 'react';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 
+import Login from './Login/Login';
+import Search from './Search/Search';
 import styles from './Header.module.scss';
 import * as Category from '../../../data/category';
-import Search from './Search/Search';
-import Login from './Login/Login';
 import * as ItemCart from '../../../services/itemCart';
-import type { GetItemCartResponse } from '../../../pages/ItemsCart/ItemsCart';
 import { useCartItem } from '../../../contexts/CartContext';
 import { useLoginSelector } from '../../../hooks/useAppSelector';
+import type { GetItemCartResponse } from '../../../pages/ItemsCart/ItemsCart';
 
 const CategoryConfig = Category.categoryConfig;
 
@@ -20,10 +20,10 @@ interface HeaderProps {
 }
 const cx = classNames.bind(styles);
 
-function Header({ isToggle }: HeaderProps): JSX.Element {
+function Header({ isToggle }: HeaderProps) {
     const userData = useLoginSelector();
-    const [totalItemCart, setTotalItemCart] = useState<GetItemCartResponse | null>(null);
     const { totalCart } = useCartItem();
+    const [totalItemCart, setTotalItemCart] = useState<GetItemCartResponse | null>(null);
     useEffect(() => {
         const fetchTotalCart = async () => {
             const totalItem = await ItemCart.GetItemCart(userData?.accessToken!);
