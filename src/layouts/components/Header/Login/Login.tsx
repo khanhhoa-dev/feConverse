@@ -1,15 +1,15 @@
+import classNames from 'classnames/bind';
+import styles from './Login.module.scss';
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import classNames from 'classnames/bind';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps, message, Spin } from 'antd';
-import styles from './Login.module.scss';
 
-import { type MenuItem, CustomerMenuKey, CUSTOMER_MENU } from '../../../../data/customerMenu';
+import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import type { ILoginError } from '../../../../stores/Slices/authSlice';
 import { fetchLogin, fetchLogout } from '../../../../stores/Slices/authSlice';
-import { useAppDispatch } from '../../../../hooks/useAppDispatch';
-import { useLoginSelector } from '../../../../hooks/useAppSelector';
+import { useLoginSelector, useAccessToken } from '../../../../hooks/useAppSelector';
+import { type MenuItem, CustomerMenuKey, CUSTOMER_MENU } from '../../../../data/customerMenu';
 
 const cx = classNames.bind(styles);
 
@@ -20,10 +20,11 @@ export interface ILogin {
 
 function Login() {
     const navigate = useNavigate();
-    const userData = useLoginSelector();
-    const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
+    const userData = useLoginSelector();
+    const accessToken = useAccessToken();
     const [form] = Form.useForm<ILogin>();
+    const [loading, setLoading] = useState<boolean>(false);
     const [messageApi, contextHolder] = message.useMessage();
     const [isLoginVisible, setIsLoginVisible] = useState<boolean>(false);
 
@@ -85,7 +86,7 @@ function Login() {
             if (item && item.route) {
                 navigate(item.route);
             } else if (key === CustomerMenuKey.Logout) {
-                await dispatch(fetchLogout(userData?.accessToken!));
+                await dispatch(fetchLogout(accessToken!));
                 form.resetFields();
                 messageApi.success({
                     content: 'Logout Successfully!',

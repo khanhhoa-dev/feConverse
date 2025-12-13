@@ -6,7 +6,7 @@ import { Popconfirm, message, Button, Spin } from 'antd';
 
 import * as ItemCart from '../../services/itemCart';
 import { useCartItem } from '../../contexts/CartContext';
-import { useLoginSelector } from '../../hooks/useAppSelector';
+import { useAccessToken } from '../../hooks/useAppSelector';
 import TableCustom, { cx as tableCustomCx } from '../../components/Table/TableCustom';
 
 export interface IItemCart {
@@ -27,7 +27,7 @@ export interface GetItemCartResponse {
 
 function ItemsCart() {
     const navigate = useNavigate();
-    const userData = useLoginSelector();
+    const accessToken = useAccessToken();
     const [messageApi, contextHolder] = message.useMessage();
     const { setCheckOutItems, setTotalCart } = useCartItem();
     const [loading, setLoading] = useState<boolean>(false);
@@ -109,9 +109,10 @@ function ItemsCart() {
         const fetchApiItem = async () => {
             try {
                 setLoading(true);
-                const data = await ItemCart.GetItemCart(userData?.accessToken!);
+                const data = await ItemCart.GetItemCart(accessToken!);
                 setLoading(false);
                 setDataSource(data.dataCart);
+                setTotalCart(data?.totalCart!);
             } catch (error) {
                 console.log('Error:', error);
             }
@@ -126,8 +127,8 @@ function ItemsCart() {
         },
     };
 
-    const handleDeleteItemCart = (id: string) => {
-        ItemCart.DeleteItemCart(id, userData?.accessToken!);
+    const handleDeleteItemCart = async (id: string) => {
+        await ItemCart.DeleteItemCart(id, accessToken!);
         const setDataCart = dataSource?.filter((item) => item._id !== id) || [];
         setDataSource(setDataCart);
         setTotalCart(dataSource?.length!);

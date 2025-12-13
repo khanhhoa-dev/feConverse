@@ -12,7 +12,6 @@ import {
     Card,
     Typography,
     Divider,
-    Modal,
     message,
     Spin,
 } from 'antd';
@@ -24,7 +23,7 @@ import type { IDataPayment } from '../../ts';
 import type { IItemCart } from '../ItemsCart/ItemsCart';
 import { useCartItem } from '../../contexts/CartContext';
 import * as ProductCheckOut from '../../services/checkout';
-import { useLoginSelector } from '../../hooks/useAppSelector';
+import { useAccessToken } from '../../hooks/useAppSelector';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -42,11 +41,10 @@ export interface IInformationOrder {
 function Pay() {
     const [form] = Form.useForm();
     const navigate = useNavigate();
-    const userData = useLoginSelector();
+    const accessToken = useAccessToken();
     const [loading, setLoading] = useState<boolean>(false);
     const [messageApi, contextHolder] = message.useMessage();
     const { checkOutItems, setCheckOutItems } = useCartItem();
-    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
     useEffect(() => {
         const getCheckoutProduct = localStorage.getItem('checkoutProduct');
@@ -57,12 +55,13 @@ function Pay() {
     }, [checkOutItems]);
 
     //Total Price Products
-    const OrderTotal =
+    const orderTotal =
         checkOutItems.reduce((sum: number, item: IItemCart) => {
             const numericPrice = Number(item.price.replace(/,/g, ''));
             return sum + numericPrice * item.quantity;
         }, 0) || 0;
 
+    // Type price: string => number
     const infoProduct = checkOutItems.map((item) => {
         return {
             ...item,
@@ -70,7 +69,7 @@ function Pay() {
         };
     });
 
-    const accessToken = userData?.accessToken as string;
+    const token = accessToken as string;
 
     const onFinish = async (values: IInformationOrder) => {
         setLoading(true);
@@ -78,18 +77,18 @@ function Pay() {
             const checkoutData: IDataPayment = {
                 ...values,
                 items: infoProduct,
-                total: OrderTotal,
+                total: orderTotal,
             };
 
-            const linkPayos = await ProductCheckOut.checkout(accessToken, checkoutData);
-
             if (values.paymentMethod === 'payos') {
-                window.location.href = linkPayos;
+                const linkPayos = await ProductCheckOut.checkoutPayos(token, checkoutData);
+                window.location.href = linkPayos.checkoutUrl;
                 return;
             }
 
             if (values.paymentMethod === 'cod') {
-                setIsModalVisible(true);
+                await ProductCheckOut.checkoutCod(token, checkoutData);
+                navigate('/order-detail');
                 return;
             }
 
@@ -103,15 +102,6 @@ function Pay() {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleOkModal = () => {
-        setIsModalVisible(false);
-        navigate('/items-cart');
-    };
-
-    const handleCancelModal = () => {
-        setIsModalVisible(false);
     };
 
     return (
@@ -264,7 +254,7 @@ function Pay() {
                                 })}
                                 <div className={cx('footer')}>
                                     <div className={cx('total-section')}>
-                                        <h3>Order Total: {OrderTotal.toLocaleString()}đ</h3>
+                                        <h3>Order Total: {orderTotal.toLocaleString()}đ</h3>
                                     </div>
                                     <Button
                                         type="primary"
@@ -281,26 +271,8 @@ function Pay() {
                         </Col>
                     </Row>
                 </Form>
-                <Modal
-                    title="Scan QR Code to Pay"
-                    open={isModalVisible}
-                    onOk={handleOkModal}
-                    onCancel={handleCancelModal}
-                    okText="Confirm Payment"
-                    cancelText="Cancel"
-                >
-                    <div style={{ textAlign: 'center', padding: '20px' }}>
-                        <img
-                            src="https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-technology-qr-code-image_2235725.jpg"
-                            alt="QR Code"
-                            style={{ width: '100%', maxWidth: '300px', marginBottom: '10px' }}
-                        />
-                        <p>Total: {OrderTotal.toLocaleString()} VNĐ</p>
-                        <p>Scan with VNPay/MoMo app</p>
-                    </div>
-                </Modal>
             </div>
-            <Spin fullscreen spinning={loading}></Spin>
+            <Spin fullscreen spinning={loading} tip="Please wait..."></Spin>
         </div>
     );
 }

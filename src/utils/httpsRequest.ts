@@ -39,9 +39,8 @@ const refreshAccessToken = async (): Promise<RefreshResponse> => {
 
 //[Auto Refresh Token Expire]
 httpsRequest.interceptors.request.use(async (config) => {
-    const userData = (store.getState() as RootState).auth.login.data;
+    let tokenRefresh = (store.getState() as RootState).auth.accessToken;
 
-    let tokenRefresh = userData?.accessToken;
     if (tokenRefresh && isTokenExpire(tokenRefresh)) {
         try {
             const refreshData = await refreshAccessToken();

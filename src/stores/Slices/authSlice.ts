@@ -9,6 +9,16 @@ export interface ILoginError {
     message: string;
 }
 
+export interface IUserInfo {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    username: string;
+    email: string;
+    admin: boolean;
+    gender: string;
+}
+
 interface IAuthState {
     accessToken: string | null;
     register: {
@@ -18,7 +28,7 @@ interface IAuthState {
     };
     login: {
         pending: boolean;
-        data: IAuthUser | null;
+        data: IUserInfo | null;
         error: ILoginError | null;
     };
     logout: {
@@ -108,9 +118,6 @@ const authSlice = createSlice({
         // Update AccessToken
         updateAccessToken: (state, action) => {
             state.accessToken = action.payload.accessToken;
-            if (state.login.data) {
-                state.login.data.accessToken = action.payload.accessToken;
-            }
         },
     },
     extraReducers: (builder) => {
@@ -134,9 +141,10 @@ const authSlice = createSlice({
         });
         builder.addCase(fetchLogin.fulfilled, (state, action) => {
             state.login.pending = false;
-            state.login.data = action.payload;
+            const { accessToken, ...infoUser } = action.payload;
+            state.login.data = infoUser;
             state.login.error = null;
-            state.accessToken = action.payload.accessToken;
+            state.accessToken = accessToken;
         });
         builder.addCase(fetchLogin.rejected, (state, action) => {
             state.login.error = action.payload ?? { field: 'username', message: 'Server error' };

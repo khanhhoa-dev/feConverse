@@ -7,12 +7,12 @@ import type { IProductDetail } from '../../ts';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '../../services/products';
 import TableCustom from '../../components/Table/TableCustom';
-import { useLoginSelector } from '../../hooks/useAppSelector';
+import { useAccessToken } from '../../hooks/useAppSelector';
 import { deleteSoftProduct } from '../../services/deleteSoftProduct';
 
 function ManageProducts() {
     const navigate = useNavigate();
-    const userData = useLoginSelector();
+    const accessToken = useAccessToken();
     const [loading, setLoading] = useState<boolean>(false);
     const [messageApi, contextHolder] = message.useMessage();
     const [openModel, setOpenModel] = useState<boolean>(false);
@@ -21,7 +21,7 @@ function ManageProducts() {
 
     useEffect(() => {
         const fetchAllProduct = async () => {
-            const token = userData?.accessToken as string;
+            const token = accessToken as string;
             try {
                 setLoading(true);
                 const data = await allProducts(token);

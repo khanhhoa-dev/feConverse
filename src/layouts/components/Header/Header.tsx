@@ -10,7 +10,7 @@ import styles from './Header.module.scss';
 import * as Category from '../../../data/category';
 import * as ItemCart from '../../../services/itemCart';
 import { useCartItem } from '../../../contexts/CartContext';
-import { useLoginSelector } from '../../../hooks/useAppSelector';
+import { useLoginSelector, useAccessToken } from '../../../hooks/useAppSelector';
 import type { GetItemCartResponse } from '../../../pages/ItemsCart/ItemsCart';
 
 const CategoryConfig = Category.categoryConfig;
@@ -21,16 +21,17 @@ interface HeaderProps {
 const cx = classNames.bind(styles);
 
 function Header({ isToggle }: HeaderProps) {
-    const userData = useLoginSelector();
     const { totalCart } = useCartItem();
+    const accessToken = useAccessToken();
+    const userData = useLoginSelector();
     const [totalItemCart, setTotalItemCart] = useState<GetItemCartResponse | null>(null);
     useEffect(() => {
         const fetchTotalCart = async () => {
-            const totalItem = await ItemCart.GetItemCart(userData?.accessToken!);
+            const totalItem = await ItemCart.GetItemCart(accessToken!);
             setTotalItemCart(totalItem);
         };
         fetchTotalCart();
-    }, [totalCart, userData?.accessToken]);
+    }, [totalCart, accessToken]);
 
     return (
         <header
