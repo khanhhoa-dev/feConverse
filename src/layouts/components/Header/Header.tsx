@@ -77,7 +77,7 @@ function Header({ isToggle }: HeaderProps) {
                     </div>
                     <div className={cx('login-search')}>
                         <Search />
-                        {userData && userData.admin === false && (
+                        {userData && userData.admin === false && accessToken && (
                             <div className={cx('items-cart')}>
                                 <Link to="/items-cart">
                                     <Badge

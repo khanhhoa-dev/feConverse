@@ -62,14 +62,14 @@ function Login() {
         console.log('Failed:', errorInfo);
     }, []);
 
-    const handleOnClickShow = useCallback(() => {
-        if (!userData) {
+    const handleOnClickShow = () => {
+        if (!accessToken) {
             form.resetFields();
             setIsLoginVisible(true);
         } else {
             setIsLoginVisible(false);
         }
-    }, [userData]);
+    };
 
     const filteredMenu = Object.values(CUSTOMER_MENU).filter((item: MenuItem) => {
         //Authorization
@@ -110,7 +110,7 @@ function Login() {
         <>
             <div className={cx('login')} onClick={handleOnClickShow}>
                 {contextHolder}
-                {userData ? (
+                {userData && accessToken ? (
                     <Dropdown
                         menu={{
                             items: menuItems,

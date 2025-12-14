@@ -4,8 +4,8 @@ import { Spin, Select, Modal, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 import * as Users from '../../services/users';
+import { useAccessToken } from '../../hooks/useAppSelector';
 import TableCustom from '../../components/Table/TableCustom';
-import { useLoginSelector } from '../../hooks/useAppSelector';
 
 export interface IInformUser {
     _id: string;
@@ -18,7 +18,7 @@ export interface IInformUser {
 }
 
 function ManagerUsers() {
-    const userData = useLoginSelector();
+    const accessToken = useAccessToken();
     const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState<boolean>(false);
     const [openModel, setOpenModel] = useState<boolean>(false);
@@ -26,7 +26,6 @@ function ManagerUsers() {
     const [usersData, setUsersData] = useState<IInformUser[]>([]);
 
     useEffect(() => {
-        const accessToken = userData?.accessToken;
         const fetchUsersData = async () => {
             try {
                 setLoading(true);
@@ -48,9 +47,8 @@ function ManagerUsers() {
     const handleOkDelete = async () => {
         if (!idDeleteUser) return;
         setLoading(true);
-        const token = userData?.accessToken as string;
         //Call API
-        await Users.DeleteUsers(token, idDeleteUser);
+        await Users.DeleteUsers(accessToken as string, idDeleteUser);
         setLoading(false);
         messageApi.success({
             content: 'Delete user successfully!',
@@ -68,9 +66,8 @@ function ManagerUsers() {
         setIdDeleteUser(_id);
     };
     const handleUpdateRole = async (_id: string, dataUpdate: boolean) => {
-        const token = userData?.accessToken as string;
         //Call API
-        await Users.UpdateRoleUser(token, dataUpdate, _id);
+        await Users.UpdateRoleUser(accessToken as string, dataUpdate, _id);
     };
 
     const columns: TableColumnsType<IInformUser> = [
