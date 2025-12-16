@@ -2,28 +2,28 @@ import { useEffect, useState } from 'react';
 import type { TableColumnsType } from 'antd';
 import { Spin, Modal, message, Tag, Button, Rate, Typography } from 'antd';
 
-import type { IOrderDetail } from '../../ts';
 import * as OrderInfo from '../../services/orderDetail';
+import type { IOrderDetail, ICheckOutItem } from '../../ts';
 import TableCustom from '../../components/Table/TableCustom';
-import { useLoginSelector } from '../../hooks/useAppSelector';
+import { useLoginSelector, useAccessToken } from '../../hooks/useAppSelector';
 
 const { Text } = Typography;
 function OrderDetail() {
     const userData = useLoginSelector();
+    const accessToken = useAccessToken();
     const [loading, setLoading] = useState<boolean>(false);
     const [messageApi, contextHolder] = message.useMessage();
     const [productCancel, setProductCancel] = useState<boolean>(false);
     const [userOrderInfo, setUserOrderInfo] = useState<IOrderDetail[]>([]);
     const [statusModelReview, setStatusModelReview] = useState<boolean>(false);
 
-    const accessToken = userData?.accessToken as string;
     const userId = userData?._id as string;
     useEffect(() => {
         if (!userId) return;
         const fetchUserOrderInfo = async () => {
             try {
                 setLoading(true);
-                const result = await OrderInfo.orderDetail(accessToken, userId);
+                const result = await OrderInfo.orderDetail(accessToken as string, userId);
                 setLoading(false);
                 setUserOrderInfo(result);
             } catch (error) {
@@ -33,8 +33,32 @@ function OrderDetail() {
         fetchUserOrderInfo();
     }, []);
 
-    const handleSubmitReview = () => {};
-    const handleSubmitCancel = () => {};
+    const handleSubmitReview = async (orderCode: number) => {
+        setLoading(true);
+        await OrderInfo.reviewOrder(accessToken!, orderCode);
+        setUserOrderInfo((prev) =>
+            prev.filter((item: IOrderDetail) => item.orderCode !== orderCode)
+        );
+        setProductCancel(false);
+        setLoading(false);
+        messageApi.success({
+            content: 'Review product successfully!',
+            style: { fontSize: 14, fontWeight: 600 },
+        });
+    };
+    const handleSubmitCancel = async (orderCode: number) => {
+        setLoading(true);
+        await OrderInfo.updateStatus(accessToken!, 'cancel', orderCode);
+        setUserOrderInfo((prev) =>
+            prev.filter((item: IOrderDetail) => item.orderCode !== orderCode)
+        );
+        setProductCancel(false);
+        setLoading(false);
+        messageApi.success({
+            content: 'Cancel order successfully!',
+            style: { fontSize: 14, fontWeight: 600 },
+        });
+    };
 
     const columns: TableColumnsType<IOrderDetail> = [
         {
@@ -51,28 +75,31 @@ function OrderDetail() {
             render: (code) => <strong>{code}</strong>,
         },
         {
-            title: 'Image',
+            title: 'Product',
             dataIndex: 'items',
-            width: 100,
+            width: 300,
             align: 'center',
-            render: (items: any[]) => (
-                <img
-                    src={items[0]?.image}
-                    alt="product"
-                    style={{ width: 60, height: 60, objectFit: 'contain', borderRadius: 8 }}
-                />
-            ),
-        },
-        {
-            title: 'Product name',
-            dataIndex: 'items',
-            width: 200,
-            align: 'center',
-            render: (items: any[]) => (
+            render: (items: ICheckOutItem[]) => (
                 <div>
                     {items.map((item) => (
-                        <div key={item._id}>
-                            {item.name} ({item.color} - Size {item.size})
+                        <div
+                            key={item._id}
+                            style={{ display: 'flex', alignItems: 'center', marginBottom: 10 }}
+                        >
+                            <img
+                                src={item?.image}
+                                alt="Image Product"
+                                style={{
+                                    width: 60,
+                                    height: 60,
+                                    objectFit: 'contain',
+                                    borderRadius: 8,
+                                    marginRight: 10,
+                                }}
+                            />
+                            <p style={{ width: 160, margin: 0 }}>
+                                {item.name} ({item.color} - Size {item.size})
+                            </p>
                         </div>
                     ))}
                 </div>
@@ -93,7 +120,7 @@ function OrderDetail() {
             render: (total: number) => <span>{total.toLocaleString('vi-VN')}đ</span>,
         },
         {
-            title: 'Status',
+            title: 'Order status',
             dataIndex: 'orderStatus',
             width: 160,
             align: 'center',
@@ -109,6 +136,29 @@ function OrderDetail() {
                 } else if (status === 'shipping') {
                     color = 'blue';
                     text = 'Shipping';
+                } else if (status === 'confirmed') {
+                    color = 'blue';
+                    text = 'Confirmed';
+                }
+                return <Tag color={color}>{text.toUpperCase()}</Tag>;
+            },
+        },
+        {
+            title: 'Payment status',
+            dataIndex: 'paymentStatus',
+            width: 180,
+            align: 'center',
+            render: (statusPayment: string) => {
+                let color = 'default';
+                let text = statusPayment;
+                if (statusPayment === 'pending') {
+                    ((color = 'yellow'), (text = 'Unpaid'));
+                } else if (statusPayment === 'paid') {
+                    color = 'green';
+                    text = 'Paid';
+                } else if (statusPayment === 'fail') {
+                    color = 'red';
+                    text = 'Payment Error';
                 }
                 return <Tag color={color}>{text.toUpperCase()}</Tag>;
             },
@@ -125,7 +175,7 @@ function OrderDetail() {
             dataIndex: 'orderCode',
             align: 'center',
             width: 140,
-            render: (id, record) => {
+            render: (orderCode, record) => {
                 if (record.orderStatus === 'paid') {
                     return (
                         <>
@@ -142,7 +192,7 @@ function OrderDetail() {
                             <Modal
                                 title="Product reviews"
                                 open={statusModelReview}
-                                onOk={handleSubmitReview}
+                                onOk={() => handleSubmitReview(orderCode)}
                                 onCancel={() => setStatusModelReview(false)}
                                 okText="Submit a review"
                                 cancelText="Cancel"
@@ -156,8 +206,10 @@ function OrderDetail() {
                                         borderColor: '#000',
                                     },
                                 }}
-                                maskStyle={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                styles={{
+                                    mask: {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                    },
                                 }}
                             >
                                 <div style={{ textAlign: 'center', padding: '20px 0' }}>
@@ -190,7 +242,7 @@ function OrderDetail() {
                             </Modal>
                         </>
                     );
-                } else if (record.orderStatus === 'pending') {
+                } else if (record.orderStatus === 'pending' || 'confirmed') {
                     return (
                         <>
                             <Button
@@ -205,7 +257,7 @@ function OrderDetail() {
                             <Modal
                                 title="Product cancel"
                                 open={productCancel}
-                                onOk={handleSubmitCancel}
+                                onOk={() => handleSubmitCancel(orderCode)}
                                 onCancel={() => setProductCancel(false)}
                                 okText="Confirm"
                                 cancelText="Cancel"
@@ -219,8 +271,10 @@ function OrderDetail() {
                                         borderColor: '#000',
                                     },
                                 }}
-                                maskStyle={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                styles={{
+                                    mask: {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                                    },
                                 }}
                             >
                                 <Text

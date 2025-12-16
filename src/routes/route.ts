@@ -10,8 +10,10 @@ import ItemsCart from '../pages/ItemsCart/ItemsCart';
 import AddProduct from '../pages/AddProduct/AddProduct';
 import OnlyHeader from '../layouts/OnlyHeader/OnlyHeader';
 import OrderDetail from '../pages/OrderDetail/OrderDetail';
+import CancelOrder from '../pages/CancelOrder/CancelOrder';
 import ManagerUsers from '../pages/ManageUsers/ManageUsers';
 import StoreLocator from '../pages/StoreLocator/StoreLocator';
+import OrderReviewed from '../pages/OrderReviewed/OrderReviewed';
 import UpdateProduct from '../pages/UpdateProduct/UpdateProduct';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
 import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
@@ -34,15 +36,17 @@ export const publicRoute: Route[] = [
     { path: config.router.products, component: Product },
     { path: config.router.register, component: Register },
     { path: config.router.items_cart, component: ItemsCart },
+    { path: config.router.order_detail, component: OrderDetail },
+    { path: config.router.cancel_order, component: CancelOrder },
     { path: config.router.store_locator, component: StoreLocator },
+    { path: config.router.review_order, component: OrderReviewed },
     { path: config.router.pay, component: Pay, layout: OnlyHeader },
     { path: config.router.detail_product, component: DetailProduct },
-    { path: config.router.order_detail, component: OrderDetail },
     { path: config.router.add_product, component: AddProduct, layout: OnlyHeader },
     { path: config.router.manage_users, component: ManagerUsers, layout: OnlyHeader },
     { path: config.router.update_product, component: UpdateProduct, layout: OnlyHeader },
-    { path: config.router.forgot_password, component: ForgotPassword, layout: OnlyHeader },
     { path: config.router.manage_products, component: ManageProducts, layout: OnlyHeader },
+    { path: config.router.forgot_password, component: ForgotPassword, layout: OnlyHeader },
     { path: config.router.deleted_product, component: DeletedProducts, layout: OnlyHeader },
 ];
 export const privateRoute = [];
