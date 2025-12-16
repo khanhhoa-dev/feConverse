@@ -110,7 +110,7 @@ function Login() {
         <>
             <div className={cx('login')} onClick={handleOnClickShow}>
                 {contextHolder}
-                {userData && accessToken ? (
+                {userData ? (
                     <Dropdown
                         menu={{
                             items: menuItems,
