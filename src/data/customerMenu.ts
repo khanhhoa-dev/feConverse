@@ -1,6 +1,5 @@
 //Enum-like
 export enum CustomerMenuKey {
-    MyAccount = 'my-account',
     ManageProducts = 'manage-products',
     ManageUsers = 'manage-users',
     OrderDetail = 'order-detail',
@@ -15,12 +14,6 @@ export type MenuItem = {
 };
 
 export const CUSTOMER_MENU: Record<CustomerMenuKey, MenuItem> = {
-    [CustomerMenuKey.MyAccount]: {
-        key: CustomerMenuKey.MyAccount,
-        label: 'My Account',
-        route: '/profile',
-        requiredRole: ['user', 'admin'],
-    },
     [CustomerMenuKey.ManageProducts]: {
         key: CustomerMenuKey.ManageProducts,
         label: 'Manage-Products',

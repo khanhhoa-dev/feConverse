@@ -1,7 +1,6 @@
 const router = {
     pay: '/pay',
     help: '/help',
-    profile: '/profile',
     items_cart: '/items-cart',
     add_product: '/add/product',
     register: '/account/register',
@@ -14,7 +13,6 @@ const router = {
     cancel_order: '/order/canceled',
     update_users: '/update-users/:id',
     manage_products: '/manage-products',
-    forgot_password: '/forgot-password',
     deleted_product: '/deleted-products',
     detail_product: '/product/detail/:slug',
     home: '/',

@@ -1,23 +1,25 @@
-import classNames from 'classnames/bind';
-import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons';
-import { Link, useLocation } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { Spin } from 'antd';
 import type { ChangeEvent } from 'react';
+import classNames from 'classnames/bind';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons';
 
 import styles from './Search.module.scss';
-import useDebounce from '../../../../hooks/useDebounce';
-import * as searchService from '../../../../services/searchProduct';
-import Popper from '../../../../components/Popper/Popper';
 import type { DataSelectField } from '../../../../ts';
+import useDebounce from '../../../../hooks/useDebounce';
+import Popper from '../../../../components/Popper/Popper';
+import * as searchService from '../../../../services/searchProduct';
 
 const cx = classNames.bind(styles);
 
 function Search() {
-    const [inputValue, setInputValue] = useState('');
-    const [datas, setDatas] = useState<DataSelectField[]>([]);
-    const [active, setActive] = useState<boolean>(false);
-    const inputRef = useRef<HTMLInputElement>(null);
     const location = useLocation();
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [inputValue, setInputValue] = useState('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [active, setActive] = useState<boolean>(false);
+    const [datas, setDatas] = useState<DataSelectField[]>([]);
 
     const debounceValue = useDebounce(inputValue, 600);
 
@@ -35,8 +37,10 @@ function Search() {
             return;
         }
         const fetchApi = async () => {
+            setLoading(true);
             const result = await searchService.search(debounceValue);
             setDatas(result);
+            setLoading(false);
         };
 
         fetchApi();
@@ -89,6 +93,7 @@ function Search() {
                 onClick={handleClear}
             />
             <Popper active={active}>
+                <Spin fullscreen spinning={loading}></Spin>
                 {showPopper ? (
                     datas.map((data, i) => {
                         return (

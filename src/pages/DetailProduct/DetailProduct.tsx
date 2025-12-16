@@ -36,7 +36,9 @@ function DetailProduct() {
             return;
         }
         const fetchApi = async () => {
+            setLoading(true);
             const data = await GetDetailProduct.detail(slug);
+            setLoading(false);
             setDataDetail(data);
             setSelectedSize(null);
             setQuantityProduct(1);

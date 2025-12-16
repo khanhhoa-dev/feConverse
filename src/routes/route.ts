@@ -3,7 +3,6 @@ import type { ComponentType } from 'react';
 import Pay from '../pages/Pay/Pay';
 import Help from '../pages/Help/Help';
 import Home from '../pages/Home/Home';
-import Profile from '../pages/Profile/Profile';
 import Product from '../pages/Products/Product';
 import Register from '../pages/Register/Register';
 import ItemsCart from '../pages/ItemsCart/ItemsCart';
@@ -16,7 +15,6 @@ import StoreLocator from '../pages/StoreLocator/StoreLocator';
 import OrderReviewed from '../pages/OrderReviewed/OrderReviewed';
 import UpdateProduct from '../pages/UpdateProduct/UpdateProduct';
 import DetailProduct from '../pages/DetailProduct/DetailProduct';
-import ForgotPassword from '../pages/ForgotPassword/ForgotPassword';
 import ManageProducts from '../pages/ManageProducts/ManageProducts';
 import DeletedProducts from '../pages/DeletedProducts/DeletedProducts';
 import type { LayoutProps } from '../ts';
@@ -32,7 +30,6 @@ interface Route {
 export const publicRoute: Route[] = [
     { path: config.router.help, component: Help },
     { path: config.router.home, component: Home },
-    { path: config.router.profile, component: Profile },
     { path: config.router.products, component: Product },
     { path: config.router.register, component: Register },
     { path: config.router.items_cart, component: ItemsCart },
@@ -46,7 +43,6 @@ export const publicRoute: Route[] = [
     { path: config.router.manage_users, component: ManagerUsers, layout: OnlyHeader },
     { path: config.router.update_product, component: UpdateProduct, layout: OnlyHeader },
     { path: config.router.manage_products, component: ManageProducts, layout: OnlyHeader },
-    { path: config.router.forgot_password, component: ForgotPassword, layout: OnlyHeader },
     { path: config.router.deleted_product, component: DeletedProducts, layout: OnlyHeader },
 ];
 export const privateRoute = [];
