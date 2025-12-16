@@ -69,8 +69,6 @@ function Pay() {
         };
     });
 
-    const token = accessToken as string;
-
     const onFinish = async (values: IInformationOrder) => {
         setLoading(true);
         try {
@@ -81,13 +79,16 @@ function Pay() {
             };
 
             if (values.paymentMethod === 'payos') {
-                const linkPayos = await ProductCheckOut.checkoutPayos(token, checkoutData);
+                const linkPayos = await ProductCheckOut.checkoutPayos(
+                    accessToken as string,
+                    checkoutData
+                );
                 window.location.href = linkPayos.checkoutUrl;
                 return;
             }
 
             if (values.paymentMethod === 'cod') {
-                await ProductCheckOut.checkoutCod(token, checkoutData);
+                await ProductCheckOut.checkoutCod(accessToken as string, checkoutData);
                 navigate('/order-detail');
                 return;
             }

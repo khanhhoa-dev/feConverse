@@ -94,4 +94,6 @@ export interface IOrderDetail {
     orderId: string;
     orderCode: number;
     paymentLink: string;
+    paymentStatus: string;
+    isReviewed: boolean;
 }
