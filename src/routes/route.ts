@@ -8,6 +8,7 @@ import Register from '../pages/Register/Register';
 import ItemsCart from '../pages/ItemsCart/ItemsCart';
 import AddProduct from '../pages/AddProduct/AddProduct';
 import OnlyHeader from '../layouts/OnlyHeader/OnlyHeader';
+import OrderManage from '../pages/OrderManage/OrderManage';
 import OrderDetail from '../pages/OrderDetail/OrderDetail';
 import CancelOrder from '../pages/CancelOrder/CancelOrder';
 import ManagerUsers from '../pages/ManageUsers/ManageUsers';
@@ -35,6 +36,7 @@ export const publicRoute: Route[] = [
     { path: config.router.items_cart, component: ItemsCart },
     { path: config.router.order_detail, component: OrderDetail },
     { path: config.router.cancel_order, component: CancelOrder },
+    { path: config.router.manage_orders, component: OrderManage },
     { path: config.router.store_locator, component: StoreLocator },
     { path: config.router.review_order, component: OrderReviewed },
     { path: config.router.pay, component: Pay, layout: OnlyHeader },

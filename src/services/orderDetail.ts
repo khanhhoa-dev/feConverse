@@ -2,6 +2,21 @@ import * as httpsRequest from '../utils/httpsRequest';
 
 import type { IOrderDetail } from '../ts';
 
+//[GET]: /order-detail/all
+export const orderAll = async (accessToken: string) => {
+    try {
+        const result = await httpsRequest.get<IOrderDetail[]>('/order-detail/all', {
+            headers: {
+                token: `Bearer ${accessToken}`,
+            },
+        });
+        return result;
+    } catch (error) {
+        console.log('Error:', error);
+        throw error;
+    }
+};
+
 //[GET]: /order-detail/:id
 export const orderDetail = async (accessToken: string, id: string) => {
     try {

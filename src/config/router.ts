@@ -8,6 +8,7 @@ const router = {
     order_detail: '/order-detail',
     review_order: 'order/reviewed',
     products: '/products/:product',
+    manage_orders: '/manage-orders',
     store_locator: '/store-locator',
     update_product: '/update/:slug',
     cancel_order: '/order/canceled',
