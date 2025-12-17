@@ -62,14 +62,12 @@ function Login() {
         console.log('Failed:', errorInfo);
     }, []);
 
-    const handleOnClickShow = () => {
+    const handleOnClickShow = useCallback(() => {
         if (!accessToken) {
             form.resetFields();
             setIsLoginVisible(true);
-        } else {
-            setIsLoginVisible(false);
         }
-    };
+    }, [accessToken, form]);
 
     const filteredMenu = Object.values(CUSTOMER_MENU).filter((item: MenuItem) => {
         //Authorization
