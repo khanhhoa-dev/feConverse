@@ -110,7 +110,7 @@ function Login() {
         <>
             <div className={cx('login')} onClick={handleOnClickShow}>
                 {contextHolder}
-                {userData ? (
+                {userData && accessToken ? (
                     <Dropdown
                         menu={{
                             items: menuItems,
@@ -124,7 +124,7 @@ function Login() {
                         }}
                     >
                         <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                            <h1 className={cx('text-login')}>Hey, {userData.firstname}</h1>
+                            <h1 className={cx('text-login')}>Hey, {userData?.firstname}</h1>
                             <UserOutlined className={cx('icon-user')} />
                         </div>
                     </Dropdown>

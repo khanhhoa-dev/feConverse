@@ -1,4 +1,3 @@
-import { Spin } from 'antd';
 import type { ChangeEvent } from 'react';
 import classNames from 'classnames/bind';
 import { useEffect, useRef, useState } from 'react';
@@ -17,7 +16,6 @@ function Search() {
     const location = useLocation();
     const inputRef = useRef<HTMLInputElement>(null);
     const [inputValue, setInputValue] = useState('');
-    const [loading, setLoading] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(false);
     const [datas, setDatas] = useState<DataSelectField[]>([]);
 
@@ -37,10 +35,8 @@ function Search() {
             return;
         }
         const fetchApi = async () => {
-            setLoading(true);
             const result = await searchService.search(debounceValue);
             setDatas(result);
-            setLoading(false);
         };
 
         fetchApi();
@@ -93,7 +89,6 @@ function Search() {
                 onClick={handleClear}
             />
             <Popper active={active}>
-                <Spin fullscreen spinning={loading}></Spin>
                 {showPopper ? (
                     datas.map((data, i) => {
                         return (
