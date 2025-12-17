@@ -16,22 +16,22 @@ function OrderReviewed() {
     const accessToken = useAccessToken();
     const { setCheckOutItems } = useCartItem();
     const [loading, setLoading] = useState<boolean>(false);
-    const [userOrderInfo, setUserOrderInfo] = useState<IOrderDetail[]>([]);
+    const [reviewOrder, setReviewedOrder] = useState<IOrderDetail[]>([]);
 
     const userId = userData?._id as string;
     useEffect(() => {
         if (!userId) return;
-        const fetchUserOrderInfo = async () => {
+        const fetchReviewedOrder = async () => {
             try {
                 setLoading(true);
                 const result = await OrderInfo.orderReviewed(accessToken as string, userId);
                 setLoading(false);
-                setUserOrderInfo(result);
+                setReviewedOrder(result);
             } catch (error) {
                 console.log('Error:', error);
             }
         };
-        fetchUserOrderInfo();
+        fetchReviewedOrder();
     }, []);
 
     const handleOrderAcquisition = async (data: IOrderDetail) => {
@@ -150,7 +150,7 @@ function OrderReviewed() {
 
     return (
         <>
-            <TableCustom columns={columns} data={userOrderInfo} pageConfig={pageConfig} />
+            <TableCustom columns={columns} data={reviewOrder} pageConfig={pageConfig} />
             <Spin spinning={loading} fullscreen></Spin>
         </>
     );

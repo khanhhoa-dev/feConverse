@@ -212,7 +212,7 @@ function Pay() {
                                     required={false}
                                 >
                                     <Radio.Group>
-                                        <Radio value="payos">Payment online (VNPay/MoMo)</Radio>
+                                        <Radio value="payos">Payment online (Payos)</Radio>
                                         <Radio value="cod">Cash on delivery (COD)</Radio>
                                     </Radio.Group>
                                 </Form.Item>

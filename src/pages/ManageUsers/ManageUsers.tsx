@@ -159,7 +159,7 @@ function ManagerUsers() {
     ];
 
     const pageConfig = {
-        title: 'Manager user',
+        title: 'Manage user',
         backTo: '/',
     };
 

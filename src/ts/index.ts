@@ -96,4 +96,5 @@ export interface IOrderDetail {
     paymentLink: string;
     paymentStatus: string;
     isReviewed: boolean;
+    createdAt: Date;
 }
