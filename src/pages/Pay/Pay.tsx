@@ -57,7 +57,7 @@ function Pay() {
     //Total Price Products
     const orderTotal =
         checkOutItems.reduce((sum: number, item: IItemCart) => {
-            const numericPrice = Number(item.price.replace(/,/g, ''));
+            const numericPrice = Number(item.price.replace(/[,.]/g, ''));
             return sum + numericPrice * item.quantity;
         }, 0) || 0;
 

@@ -36,15 +36,15 @@ export const publicRoute: Route[] = [
     { path: config.router.items_cart, component: ItemsCart },
     { path: config.router.order_detail, component: OrderDetail },
     { path: config.router.cancel_order, component: CancelOrder },
+    { path: config.router.manage_users, component: ManagerUsers },
     { path: config.router.manage_orders, component: OrderManage },
     { path: config.router.store_locator, component: StoreLocator },
     { path: config.router.review_order, component: OrderReviewed },
     { path: config.router.pay, component: Pay, layout: OnlyHeader },
     { path: config.router.detail_product, component: DetailProduct },
+    { path: config.router.manage_products, component: ManageProducts },
     { path: config.router.add_product, component: AddProduct, layout: OnlyHeader },
-    { path: config.router.manage_users, component: ManagerUsers, layout: OnlyHeader },
     { path: config.router.update_product, component: UpdateProduct, layout: OnlyHeader },
-    { path: config.router.manage_products, component: ManageProducts, layout: OnlyHeader },
     { path: config.router.deleted_product, component: DeletedProducts, layout: OnlyHeader },
 ];
 export const privateRoute = [];
