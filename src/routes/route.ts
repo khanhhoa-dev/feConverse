@@ -29,6 +29,7 @@ interface Route {
 }
 
 export const publicRoute: Route[] = [
+    { path: config.router.pay, component: Pay },
     { path: config.router.help, component: Help },
     { path: config.router.home, component: Home },
     { path: config.router.products, component: Product },
@@ -40,7 +41,6 @@ export const publicRoute: Route[] = [
     { path: config.router.manage_orders, component: OrderManage },
     { path: config.router.store_locator, component: StoreLocator },
     { path: config.router.review_order, component: OrderReviewed },
-    { path: config.router.pay, component: Pay, layout: OnlyHeader },
     { path: config.router.detail_product, component: DetailProduct },
     { path: config.router.manage_products, component: ManageProducts },
     { path: config.router.add_product, component: AddProduct, layout: OnlyHeader },

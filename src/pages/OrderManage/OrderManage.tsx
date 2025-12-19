@@ -122,11 +122,11 @@ function OrderManage() {
                         bordered={false}
                         onChange={(value) => handleChangeStatus(value, orderId)}
                         options={[
-                            { value: 'pending', label: 'Waiting for confirmation' },
+                            { value: 'pending', label: 'Pending' },
                             { value: 'confirmed', label: 'Confirmed' },
                             { value: 'shipping', label: 'Shipping' },
-                            { value: 'paid', label: 'Delivered' },
-                            { value: 'canceled', label: 'Cancel' },
+                            { value: 'paid', label: 'Paid' },
+                            { value: 'canceled', label: 'Canceled' },
                         ]}
                     />
                 );

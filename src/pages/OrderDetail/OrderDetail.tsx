@@ -129,10 +129,10 @@ function OrderDetail() {
                 let text = status;
                 if (status === 'paid') {
                     color = 'green';
-                    text = 'Delivered';
+                    text = 'Paid';
                 } else if (status === 'pending') {
                     color = 'yellow';
-                    text = 'Waiting for confirmation';
+                    text = 'Pending';
                 } else if (status === 'shipping') {
                     color = 'blue';
                     text = 'Shipping';
