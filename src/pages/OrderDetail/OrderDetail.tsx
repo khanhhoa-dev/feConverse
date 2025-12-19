@@ -48,11 +48,11 @@ function OrderDetail() {
     };
     const handleSubmitCancel = async (orderCode: number) => {
         setLoading(true);
-        await OrderInfo.updateStatus(accessToken!, 'cancel', orderCode);
+        await OrderInfo.updateStatus(accessToken!, 'cancel', orderCode, userId as string);
+        setProductCancel(false);
         setUserOrderInfo((prev) =>
             prev.filter((item: IOrderDetail) => item.orderCode !== orderCode)
         );
-        setProductCancel(false);
         setLoading(false);
         messageApi.success({
             content: 'Cancel order successfully!',
@@ -122,7 +122,7 @@ function OrderDetail() {
         {
             title: 'Order status',
             dataIndex: 'orderStatus',
-            width: 160,
+            width: 120,
             align: 'center',
             render: (status: string) => {
                 let color = 'default';

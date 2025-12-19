@@ -196,7 +196,7 @@ function ItemsCart() {
                 rowSelection={rowSelection}
                 pageConfig={pageConfig}
             />
-            <Spin spinning={loading} fullscreen></Spin>;
+            <Spin spinning={loading} fullscreen></Spin>
         </>
     );
 }

@@ -5,11 +5,12 @@ import type { TableColumnsType } from 'antd';
 import * as OrderInfo from '../../services/orderDetail';
 import { updateStatus } from '../../services/orderDetail';
 import type { IOrderDetail, ICheckOutItem } from '../../ts';
-import { useAccessToken } from '../../hooks/useAppSelector';
 import TableCustom from '../../components/Table/TableCustom';
+import { useAccessToken, useLoginSelector } from '../../hooks/useAppSelector';
 
 function OrderManage() {
     const accessToken = useAccessToken();
+    const userData = useLoginSelector();
     const [loading, setLoading] = useState<boolean>(false);
     const [dataOrderAll, setDataOrderAll] = useState<IOrderDetail[]>([]);
 
@@ -26,7 +27,7 @@ function OrderManage() {
         };
         fetchOrderAll();
     }, []);
-
+    const userId = userData?._id;
     // Lọc userId
     const itemsFilter = dataOrderAll.flatMap((data) => data.items.map((item) => item.userId));
     // Loại bỏ trùng lặp
@@ -35,12 +36,10 @@ function OrderManage() {
         text: id.slice(-6),
         value: id,
     }));
-    const orderId = dataOrderAll.map((data) => data.orderCode);
-    console.log(orderId);
 
     const handleChangeStatus = async (status: string, orderId: number) => {
         // Cập nhật trạng thái đơn hàng
-        await updateStatus(accessToken as string, status, orderId);
+        await updateStatus(accessToken as string, status, orderId, userId as string);
     };
 
     const columns: TableColumnsType<IOrderDetail> = [
@@ -118,7 +117,7 @@ function OrderManage() {
                 const orderId = record.orderCode;
                 return (
                     <Select
-                        defaultValue={status}
+                        defaultValue={status.toUpperCase()}
                         style={{ width: 180 }}
                         bordered={false}
                         onChange={(value) => handleChangeStatus(value, orderId)}

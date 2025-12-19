@@ -63,10 +63,15 @@ export const orderReviewed = async (accessToken: string, id: string) => {
 };
 
 //[PATCH]: /order-detail/update-status/:orderCode
-export const updateStatus = async (accessToken: string, dataUpdate: string, orderCode: number) => {
+export const updateStatus = async (
+    accessToken: string,
+    dataUpdate: string,
+    orderCode: number,
+    userId: string
+) => {
     try {
         const result = httpsRequest.patch(
-            `/order-detail/update-status/${orderCode}`,
+            `/order-detail/update-status/${orderCode}/${userId}`,
             {
                 orderStatus: dataUpdate,
             },
