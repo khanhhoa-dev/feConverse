@@ -4,6 +4,7 @@
 }
 
 .container {
-    margin-top: var(--Height-Default-Header);
-    margin-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: var(--Height-Default-Header) auto;
 }

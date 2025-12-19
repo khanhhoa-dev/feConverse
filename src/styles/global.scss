@@ -60,3 +60,32 @@ body {
     border-color: #000 !important;
     background-color: #000 !important;
 }
+
+.ant-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.ant-table {
+    min-width: 1200px;
+    width: 100% !important;
+}
+
+//Custom scroll table ant design
+.ant-table-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.ant-table-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.ant-table-wrapper::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 4px;
+}
+
+.ant-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
