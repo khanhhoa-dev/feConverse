@@ -42,6 +42,7 @@ function CancelOrder() {
         }));
         const items: IItemCart[] = dataCheckout;
         setCheckOutItems(items);
+        localStorage.setItem('checkoutProduct', JSON.stringify(items));
         setLoading(false);
         navigate('/pay');
     };
