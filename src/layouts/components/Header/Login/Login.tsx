@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Modal, Form, Input, Button, Space, Dropdown, type MenuProps, message, Spin } from 'antd';
 
+import { persistor } from '../../../../stores/store';
 import { useAppDispatch } from '../../../../hooks/useAppDispatch';
 import type { ILoginError } from '../../../../stores/Slices/authSlice';
 import { fetchLogin, fetchLogout } from '../../../../stores/Slices/authSlice';
@@ -85,6 +86,9 @@ function Login() {
                 navigate(item.route);
             } else if (key === CustomerMenuKey.Logout) {
                 await dispatch(fetchLogout(accessToken!));
+                // Xóa toàn bộ dữ liệu đã lưu trong redux-persist
+                await persistor.purge();
+                localStorage.clear();
                 form.resetFields();
                 messageApi.success({
                     content: 'Logout Successfully!',
@@ -93,7 +97,6 @@ function Login() {
                         fontWeight: 600,
                     },
                 });
-                localStorage.clear();
                 navigate('/');
             }
         },
@@ -109,7 +112,12 @@ function Login() {
         <>
             <div className={cx('login')} onClick={handleOnClickShow}>
                 {contextHolder}
-                {userData ? (
+                {userData === null ? (
+                    <>
+                        <h1 className={cx('text-login')}>Login</h1>
+                        <UserOutlined className={cx('icon-user')} />
+                    </>
+                ) : (
                     <Dropdown
                         menu={{
                             items: menuItems,
@@ -127,11 +135,6 @@ function Login() {
                             <UserOutlined className={cx('icon-user')} />
                         </div>
                     </Dropdown>
-                ) : (
-                    <>
-                        <h1 className={cx('text-login')}>Login</h1>
-                        <UserOutlined className={cx('icon-user')} />
-                    </>
                 )}
             </div>
             <Modal
