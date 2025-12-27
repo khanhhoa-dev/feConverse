@@ -93,6 +93,7 @@ function Login() {
                         fontWeight: 600,
                     },
                 });
+                localStorage.clear();
                 navigate('/');
             }
         },
