@@ -9,7 +9,7 @@ export const Banners: Record<string, IBanner> = {
         link: 'shoes',
     },
     CocaShoes: {
-        image: 'https://www.converse.vn/media/weltpixel/owlcarouselslider/images/s/t/stranger_things_main_1_.jpg',
+        image: 'https://www.converse.vn/media/weltpixel/owlcarouselslider/images/s/h/shai_red_exclusive_launch_desktop_1_.jpg',
         link: 'shoes',
     },
     Shoes: {

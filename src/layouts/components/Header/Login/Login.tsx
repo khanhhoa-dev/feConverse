@@ -112,12 +112,7 @@ function Login() {
         <>
             <div className={cx('login')} onClick={handleOnClickShow}>
                 {contextHolder}
-                {userData === null ? (
-                    <>
-                        <h1 className={cx('text-login')}>Login</h1>
-                        <UserOutlined className={cx('icon-user')} />
-                    </>
-                ) : (
+                {userData && accessToken ? (
                     <Dropdown
                         menu={{
                             items: menuItems,
@@ -135,6 +130,11 @@ function Login() {
                             <UserOutlined className={cx('icon-user')} />
                         </div>
                     </Dropdown>
+                ) : (
+                    <>
+                        <h1 className={cx('text-login')}>Login</h1>
+                        <UserOutlined className={cx('icon-user')} />
+                    </>
                 )}
             </div>
             <Modal
